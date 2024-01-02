@@ -1,10 +1,12 @@
 import logo from "../assets/cafe-depot-high-res-logo-black-transparent.png";
+import bagIcon from "../assets/bag.png";
+import profileIcon from "../assets/user.png";
 import "../styles/Navbar.css";
 
 export default function Navbar() {
   return (
-    <div className="navbar">
-      <div>
+    <div className="outer-navbar">
+      <div className="inner-navbar">
         <ul className="nav-links">
           <li className="nav-link">
             <div className="dropdown">
@@ -24,19 +26,28 @@ export default function Navbar() {
             <a href="">Brands</a>
           </li>
         </ul>
-      </div>
 
-      <div className="logo-container">
-        <img src={logo} alt="Logo" className="logo" width={150} />
-      </div>
+        <div className="logo-container">
+          <img src={logo} alt="Logo" className="logo" width={150} />
+        </div>
 
-      <div className="search-container">
-        <input type="text" placeholder="Search..." className="search-bar" />
-      </div>
-
-      <div className="icon-container">
-        <button className="nav-button">Cart</button>
-        <button className="nav-button">Profile</button>
+        <ul className="nav-links">
+          <li>
+            <div className="search-container">
+              <input
+                type="text"
+                placeholder="Search for a product"
+                className="search-bar"
+              />
+            </div>
+          </li>
+          <li>
+            <div className="icon-container">
+              <img src={profileIcon} alt="Logo" className="logo" width={30} />
+              <img src={bagIcon} alt="Logo" className="logo" width={30} />
+            </div>
+          </li>
+        </ul>
       </div>
     </div>
   );

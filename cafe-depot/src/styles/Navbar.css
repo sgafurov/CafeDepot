@@ -1,12 +1,19 @@
-.navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
+.outer-navbar {
+    width: 100%;
     border-bottom: 1px solid black;
 }
 
-.navbar li, .navbar ul, .navbar a {
+.inner-navbar {
+    width: fit-content;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    padding: 10px;
+    width: fit-content;
+    margin: 0 auto;
+}
+
+.inner-navbar li, .inner-navbar ul, .inner-navbar a {
     list-style: none;
     text-decoration: none;
 }
@@ -22,6 +29,7 @@
     border: none;
     padding: 10px;
     cursor: pointer;
+    font-size: 15px;
 }
 
 .dropdown:hover .dropdown-content {
@@ -61,6 +69,7 @@
 .logo-container {
     flex-grow: 1;
     text-align: center;
+    margin: 0 100px;
 }
 
 .logo {
@@ -75,6 +84,9 @@
 
 .search-bar {
     padding: 10px;
+    border-radius: 5px;
+    border: 1px solid grey;
+    font-size: 15px;
 }
 
 .icon-container {
