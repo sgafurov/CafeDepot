@@ -1,4 +1,4 @@
-import logo from "../assets/cafe-depot-high-res-logo-black-transparent.png";
+import logo from "../assets/cafe-depot-high-resolution-logo-transparent.png";
 import bagIcon from "../assets/bag.png";
 import profileIcon from "../assets/user.png";
 import "../styles/Navbar.css";
@@ -32,7 +32,7 @@ export default function Navbar() {
         </div>
 
         <ul className="nav-links">
-          <li>
+          <li className="nav-link">
             <div className="search-container">
               <input
                 type="text"
@@ -41,10 +41,14 @@ export default function Navbar() {
               />
             </div>
           </li>
-          <li>
+          <li className="nav-link">
             <div className="icon-container">
-              <img src={profileIcon} alt="Logo" className="logo" width={30} />
-              <img src={bagIcon} alt="Logo" className="logo" width={30} />
+              <li className="nav-link">
+                <img src={profileIcon} alt="Logo" className="logo" width={30} />
+              </li>
+              <li className="nav-link">
+                <img src={bagIcon} alt="Logo" className="logo" width={30} />
+              </li>
             </div>
           </li>
         </ul>

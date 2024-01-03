@@ -1,0 +1,23 @@
+.landing h1 {
+    text-align: left;
+    margin: 0 20px;
+}
+
+.landing li, .landing ul {
+    list-style: none;
+    padding: 0;
+}
+
+.categories {
+    display: flex;
+    margin: 0 20px;
+}
+
+.categories li {
+    margin-right: 10px;
+}
+
+.promoBanner {
+    width: 100%;
+    height: auto;
+}

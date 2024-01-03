@@ -9,8 +9,13 @@
     justify-content: space-evenly;
     align-items: center;
     padding: 10px;
-    width: fit-content;
+    /* width: fit-content; */
+    width: 1200px;
     margin: 0 auto;
+}
+
+.inner-navbar a:hover, .inner-navbar a:visited {
+    color: black;
 }
 
 .inner-navbar li, .inner-navbar ul, .inner-navbar a {
@@ -24,7 +29,8 @@
 }
 
 .dropbtn {
-    background-color: rgb(140, 140, 140);
+    background-color: rgba(0,116,217,255);
+    color:white;
     border-radius: 5px;
     border: none;
     padding: 10px;
