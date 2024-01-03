@@ -1,6 +1,6 @@
 import logo from "../assets/cafe-depot-high-resolution-logo-transparent.png";
-import bagIcon from "../assets/bag.png";
-import profileIcon from "../assets/user.png";
+import bagIcon from "../assets/icons/bag.png";
+import profileIcon from "../assets/icons/user.png";
 import "../styles/Navbar.css";
 
 export default function Navbar() {

@@ -1,6 +1,11 @@
+.promoBanner {
+    width: 100%;
+    height: auto;
+}
+
 .landing h1 {
     text-align: left;
-    margin: 0 20px;
+    margin: 20px;
 }
 
 .landing li, .landing ul {
@@ -13,11 +18,9 @@
     margin: 0 20px;
 }
 
-.categories li {
-    margin-right: 10px;
-}
-
-.promoBanner {
-    width: 100%;
-    height: auto;
+.category {
+    margin-right: 20px;
+    display: block;
+    background-color: rgb(240, 240, 240);
+    border-radius: 15px;
 }
