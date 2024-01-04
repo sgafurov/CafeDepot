@@ -15,12 +15,18 @@
 
 .categories {
     display: flex;
-    margin: 0 20px;
+    margin: 20px;
 }
 
 .category {
     margin-right: 20px;
     display: block;
-    background-color: rgb(240, 240, 240);
-    border-radius: 15px;
+    /* background-color: rgb(240, 240, 240); */
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.category img {
+    display: block;
+    border-radius: 5px;
 }

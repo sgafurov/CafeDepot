@@ -21,7 +21,7 @@ export default function Landing() {
           <li key={index} className="category">
             <div>
               <p>{name}</p>
-              <img src={categories.imagePaths[index]} width={200} alt={name} />
+              <img src={categories.imagePaths[index]} width={200} alt={name}/>
             </div>
           </li>
         ))}
