@@ -1,7 +1,8 @@
-import logo from "../assets/cafe-depot-high-resolution-logo-transparent.png";
-import bagIcon from "../assets/icons/bag.png";
-import profileIcon from "../assets/icons/user.png";
-import "../styles/Navbar.css";
+import logo from "../../assets/cafe-depot-high-resolution-logo-transparent.png";
+import bagIcon from "../../assets/icons/bag.png";
+import profileIcon from "../../assets/icons/user.png";
+import { Link } from 'react-router-dom';
+import "../../styles/Navbar.css";
 
 export default function Navbar() {
   return (
@@ -12,10 +13,10 @@ export default function Navbar() {
             <div className="dropdown">
               <button className="dropbtn">Shop⌄</button>
               <div className="dropdown-content">
-                <a href="#">Utensils</a>
-                <a href="#">Cups</a>
-                <a href="#">Plates</a>
-                <a href="#">Espresso Machines</a>
+                <Link to="/shop/utensils">Utensils</Link>
+                <Link to="/shop/cups">Cups</Link>
+                <Link to="/shop/plates">Plates</Link>
+                <Link to="/shop/espresso-machines">Espresso Machines</Link>
               </div>
             </div>
           </li>
@@ -28,7 +29,9 @@ export default function Navbar() {
         </ul>
 
         <div className="logo-container">
-          <img src={logo} alt="Logo" className="logo" width={150} />
+          <Link to="/">
+            <img src={logo} alt="Logo" className="logo" width={150} />
+          </Link>
         </div>
 
         <ul className="nav-links">

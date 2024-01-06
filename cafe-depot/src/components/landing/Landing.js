@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import promoBanner from "../assets/promo-banner.jpg";
-import utensilsImage from "../assets/products/utensils.jpg";
-import cupsImage from "../assets/products/cups.jpg";
-import platesImage from "../assets/products/plates.jpg";
-import espressoMachineImage from "../assets/products/espresso-machine.jpeg";
-import "../styles/Landing.css";
+import promoBanner from "../../assets/promo-banner.jpg";
+import utensilsImage from "../../assets/products/utensils.jpg";
+import cupsImage from "../../assets/products/cups.jpg";
+import platesImage from "../../assets/products/plates.jpg";
+import espressoMachineImage from "../../assets/products/espresso-machine.jpeg";
+import "../../styles/Landing.css";
 
 export default function Landing() {
   const [categories, setCategories] = useState({
