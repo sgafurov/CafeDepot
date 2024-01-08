@@ -47,7 +47,9 @@ export default function Navbar() {
           <li className="nav-link">
             <div className="icon-container">
               <li className="nav-link">
+                <Link to="/sign-up">
                 <img src={profileIcon} alt="Logo" className="logo" width={30} />
+                </Link>
               </li>
               <li className="nav-link">
                 <img src={bagIcon} alt="Logo" className="logo" width={30} />
