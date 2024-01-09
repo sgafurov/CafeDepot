@@ -1,5 +1,4 @@
 import { useState } from "react";
-import axios from "axios";
 import "../../styles/SignUp.css";
 
 export default function SignUp() {
@@ -10,25 +9,38 @@ export default function SignUp() {
     address: "",
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      // Send a POST request to the backend to create a new user
-      const response = await axios.post(
+      const response = await fetch(
         "https://cafe-depot-backend.onrender.com/api/users/sign-up",
-        formData
+        {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        }
       );
-
-      // Handle successful signup
-      console.log("User created successfully:", response.data);
+      console.log("response ", response);
+      if (response.ok) {
+        const user = await response.json();
+        console.log("User created successfully:", user);
+        // redirect to another page
+      } else {
+        const errorData = await response.json(); 
+        throw errorData;
+      }
     } catch (error) {
-      // Handle signup failure
       console.error("Error creating user:", error.message);
+      alert("Error creating user: " + error.message);
     }
   };
 
@@ -46,7 +58,10 @@ export default function SignUp() {
       <label>Address:</label>
       <input type="text" name="address" onChange={handleChange} required />
 
-      <button type="submit">Sign Up</button>
+      {/* <button type="submit">Sign Up</button> */}
+      <button type="submit" disabled={loading}>
+        {loading ? "Signing Up..." : "Sign Up"}
+      </button>
     </form>
   );
 }
