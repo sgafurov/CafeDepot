@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../../constants";
 import "../../styles/SignUp.css";
 
 export default function SignUp() {
@@ -20,7 +21,8 @@ export default function SignUp() {
     e.preventDefault();
     try {
       const response = await fetch(
-        "https://cafe-depot-backend.onrender.com/api/users/sign-up",
+        // "https://cafe-depot-backend.onrender.com/api/users/sign-up",
+        `${BASE_URL}/api/users/sign-up`,
         {
           method: "POST",
           mode: "cors",

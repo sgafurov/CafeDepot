@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { BASE_URL } from "../../constants";
 import "../../styles/SignUp.css";
 
 export default function LogIn() {
@@ -18,7 +19,8 @@ export default function LogIn() {
     e.preventDefault();
     try {
       const response = await fetch(
-        "https://cafe-depot-backend.onrender.com/api/users/log-in",
+        // "https://cafe-depot-backend.onrender.com/api/users/log-in",
+        `${BASE_URL}/api/users/log-in`,
         {
           method: "POST",
           mode: "cors",
@@ -31,8 +33,9 @@ export default function LogIn() {
       console.log("response ", response);
       if (response.ok) {
         const user = await response.json();
+        // cache token
         console.log("User logged in successfully:", user);
-        // redirect to profile page
+        navigate("/profile");
       } else {
         const errorData = await response.json();
         throw errorData;
