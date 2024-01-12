@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import promoBanner from "../../assets/promo-banner.jpg";
 import utensilsImage from "../../assets/products/utensils.jpg";
-import cupsImage from "../../assets/products/cups.jpg";
+import cupsImage from "../../assets/products/cups-no-background.png";
 import platesImage from "../../assets/products/plates.jpg";
 import espressoMachineImage from "../../assets/products/espresso-machine.jpeg";
 import "../../styles/Landing.css";
