@@ -1,0 +1,78 @@
+.utensils-list {
+    display: flex;
+    flex-direction: row;
+}
+
+.utensil-item {
+    list-style: none;
+    display: block;
+}
+
+.utensil-item>div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.quantity-controls {
+    margin: 0 auto;
+    margin-bottom: 10px !important;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+/* 
+.quantity-controls>button {
+    margin: 0 10px;
+    padding: 8px 12px;
+    background-color: rgb(186, 186, 186);
+    color: white;
+    border: none;
+    cursor: pointer;
+    height: min-content;
+    border-radius: 10px;
+} */
+
+/* increase or decrease quantity */
+.quantity-controls>button {
+    border: none;
+    background-color: white;
+    cursor: pointer;
+}
+
+.quantity-controls>p {
+    margin: 0 10px;
+}
+
+.utensil-item>div>.details-text>p {
+    margin: 10px auto;
+    text-align: left;
+    align-self: flex-start;
+    max-width: 200px;
+    overflow-wrap: break-word;
+}
+
+.title {
+    font-weight: 700;
+}
+
+.price {
+    color: grey;
+    font-weight: 500;
+}
+
+.add-to-cart {
+    padding: 12px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    height: min-content;
+    border-radius: 5px;
+    min-width: 100px;
+}
