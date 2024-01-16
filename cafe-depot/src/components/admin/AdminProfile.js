@@ -18,31 +18,35 @@ export default function AdminProfile() {
     },
   ]);
 
-  //   useEffect(async () => {
-  //     // get all products from db and add to products useState
-  //     console.log("inside AdminProfile useEffect");
-  //     try {
-  //       const response = await fetch(`${BASE_URL}/api/products/all`, {
-  //         method: "GET",
-  //         mode: "cors",
-  //         headers: {
-  //           "Content-Type": "application/json",
-  //         },
-  //       });
-  //       console.log("response ", response);
-  //       if (response.ok) {
-  //         const products = await response.json();
-  //         console.log("Products fetched successfully:", products);
-  //         setProducts(products);
-  //       } else {
-  //         const errorData = await response.json();
-  //         throw errorData;
-  //       }
-  //     } catch (error) {
-  //       console.error("Error fetching product:", error.message);
-  //       alert("Error fetching product: " + error.message);
-  //     }
-  //   }, []);
+  useEffect(() => {
+    console.log("inside useEffect");
+    // get all products from db and add to products useState
+    const fetchData = async () => {
+      console.log("inside fetchData");
+      try {
+        const response = await fetch(`${BASE_URL}/api/products/all`, {
+          method: "GET",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log("response ", response);
+        if (response.ok) {
+          const products = await response.json();
+          console.log("Products fetched successfully:", products);
+          setProducts(products);
+        } else {
+          const errorData = await response.json();
+          throw errorData;
+        }
+      } catch (error) {
+        console.error("Error fetching product:", error.message);
+        alert("Error fetching product: " + error.message);
+      }
+    };
+    fetchData();
+  }, []);
 
   const handleChange = (e) => {
     setItem({ ...item, [e.target.name]: e.target.value });
@@ -117,11 +121,65 @@ export default function AdminProfile() {
       <div>
         {products &&
           products.map((product, index) => (
-            <div key={index}>
-              <p>Name: {product.name}</p>
-              <p>Desc: {product.description}</p>
-              <p>Price: ${product.price}</p>
-              <p>Stock: {product.stock}</p>
+            // <div key={index}>
+            //   <table>
+            //     <tbody>
+            //       <tr>
+            //         <td>Name:</td>
+            //         <td>{product.name}</td>
+            //       </tr>
+            //       <tr>
+            //         <td>Description:</td>
+            //         <td>{product.description}</td>
+            //       </tr>
+            //       <tr>
+            //         <td>Price:</td>
+            //         <td>${product.price}</td>
+            //       </tr>
+            //       <tr>
+            //         <td>Stock:</td>
+            //         <td>{product.stock}</td>
+            //       </tr>
+            //     </tbody>
+            //   </table>
+            // </div>
+            // Inside the map function where you render products
+            <div
+              key={index}
+              style={{
+                marginBottom: "20px",
+                border: "1px solid #ddd",
+                padding: "10px",
+              }}
+            >
+              <table style={{ width: "100%" }}>
+                <tbody>
+                  <tr style={{ borderBottom: "1px solid #ddd" }}>
+                    <td style={{ fontWeight: "bold", paddingRight: "10px" }}>
+                      Name:
+                    </td>
+                    <td>{product.name}</td>
+                  </tr>
+                  <tr style={{ borderBottom: "1px solid #ddd" }}>
+                    <td style={{ fontWeight: "bold", paddingRight: "10px" }}>
+                      Description:
+                    </td>
+                    <td>{product.description}</td>
+                  </tr>
+                  <tr style={{ borderBottom: "1px solid #ddd" }}>
+                    <td style={{ fontWeight: "bold", paddingRight: "10px" }}>
+                      Price:
+                    </td>
+                    <td>${product.price}</td>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: "bold", paddingRight: "10px" }}>
+                      Stock:
+                    </td>
+                    <td>{product.stock}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           ))}
       </div>
