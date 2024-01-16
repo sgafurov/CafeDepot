@@ -52,7 +52,7 @@ export default function AdminProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`${BASE_URL}/api/products/add-product`, {
+      const response = await fetch(`${BASE_URL}/api/products/add`, {
         method: "POST",
         mode: "cors",
         headers: {
