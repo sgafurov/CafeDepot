@@ -35,7 +35,11 @@ export default function LogIn() {
         const user = await response.json();
         // cache token
         console.log("User logged in successfully:", user);
-        navigate("/profile");
+        if (user.username === "dev") {
+          navigate("/admin-profile");
+        } else {
+          navigate("/profile");
+        }
       } else {
         const errorData = await response.json();
         throw errorData;
