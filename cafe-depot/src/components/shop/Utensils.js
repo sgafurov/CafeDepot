@@ -15,7 +15,7 @@ export default function Utensils() {
     }
   };
 
-  // get all utensils from DB and map out the utensils in boxes
+  // get all utensils from DB where category == utensils, and map out the utensils in boxes
   return (
       <div className="products-list">
         <ul className="utensils-list">

@@ -9,6 +9,7 @@ export default function AdminProfile() {
     description: "",
     price: "",
     stock: "",
+    category: "",
   });
   const [products, setProducts] = useState([
     {
@@ -16,6 +17,7 @@ export default function AdminProfile() {
       description: "",
       price: "",
       stock: "",
+      category: "",
     },
   ]);
 
@@ -50,6 +52,7 @@ export default function AdminProfile() {
   }, []);
 
   const handleChange = (e) => {
+    console.log("item handleChange: " + item.category);
     setItem({ ...item, [e.target.name]: e.target.value });
   };
 
@@ -118,6 +121,15 @@ export default function AdminProfile() {
             required
           />
 
+          <label>Category:</label>
+          <select name="category" onChange={handleChange}>
+            <option value={null}></option>
+            <option value="utensils">Utensils</option>
+            <option value="cups">Cups</option>
+            <option value="plates">Plates</option>
+            <option value="espresso machines">Espresso Machines</option>
+          </select>
+
           <button type="submit" disabled={loading}>
             {loading ? "Adding product..." : "Add product"}
           </button>
@@ -183,6 +195,12 @@ export default function AdminProfile() {
                       Stock:
                     </td>
                     <td>{product.stock}</td>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: "bold", paddingRight: "10px" }}>
+                      Category:
+                    </td>
+                    <td>{}</td>
                   </tr>
                 </tbody>
               </table>
