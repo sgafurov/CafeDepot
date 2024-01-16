@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
+import Loading from "../loading/Loading";
 
 export default function AdminProfile() {
   const [loading, setLoading] = useState(false);
@@ -56,6 +57,7 @@ export default function AdminProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      setLoading(true);
       const response = await fetch(`${BASE_URL}/api/products/add`, {
         method: "POST",
         mode: "cors",
@@ -65,6 +67,7 @@ export default function AdminProfile() {
         body: JSON.stringify(item),
       });
       console.log("response ", response);
+      setLoading(false);
       if (response.ok) {
         const product = await response.json();
         console.log("Product added successfully:", product);
@@ -81,42 +84,45 @@ export default function AdminProfile() {
   return (
     <div>
       <h1 className="text-center">Admin Profile</h1>
-      <form className="product-form" onSubmit={handleSubmit}>
-        <label>Name:</label>
-        <input type="text" name="name" onChange={handleChange} required />
+      {loading ? (
+        <Loading />
+      ) : (
+        <form className="product-form" onSubmit={handleSubmit}>
+          <label>Name:</label>
+          <input type="text" name="name" onChange={handleChange} required />
 
-        <label>Description:</label>
-        <input
-          type="text"
-          name="description"
-          onChange={handleChange}
-          required
-        />
+          <label>Description:</label>
+          <input
+            type="text"
+            name="description"
+            onChange={handleChange}
+            required
+          />
 
-        <label>Price:</label>
-        <input
-          type="number"
-          name="price"
-          min="0"
-          step="0.01"
-          onChange={handleChange}
-          required
-        />
+          <label>Price:</label>
+          <input
+            type="number"
+            name="price"
+            min="0"
+            step="0.01"
+            onChange={handleChange}
+            required
+          />
 
-        <label>Stock:</label>
-        <input
-          type="number"
-          name="stock"
-          min="0"
-          onChange={handleChange}
-          required
-        />
+          <label>Stock:</label>
+          <input
+            type="number"
+            name="stock"
+            min="0"
+            onChange={handleChange}
+            required
+          />
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Adding product..." : "Add product"}
-        </button>
-      </form>
-
+          <button type="submit" disabled={loading}>
+            {loading ? "Adding product..." : "Add product"}
+          </button>
+        </form>
+      )}
       <h3>current stock displayed here</h3>
       <div>
         {products &&

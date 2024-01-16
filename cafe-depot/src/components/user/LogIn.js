@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../constants";
+import Loading from "../loading/Loading";
 import "../../styles/SignUp.css";
 
 export default function LogIn() {
+  let navigate = useNavigate();
   const [formData, setFormData] = useState({
     username: "",
     password: "",
   });
-  let navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -18,19 +19,17 @@ export default function LogIn() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(
-        // "https://cafe-depot-backend.onrender.com/api/users/log-in",
-        `${BASE_URL}/api/users/log-in`,
-        {
-          method: "POST",
-          mode: "cors",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formData),
-        }
-      );
+      setLoading(true);
+      const response = await fetch(`${BASE_URL}/api/users/log-in`, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
       console.log("response ", response);
+      setLoading(false);
       if (response.ok) {
         const user = await response.json();
         // cache token
@@ -51,26 +50,37 @@ export default function LogIn() {
   };
 
   return (
-    <form className="signup-form" onSubmit={handleSubmit}>
-      <label>Username:</label>
-      <input type="text" name="username" onChange={handleChange} required />
+    <div>
+      {loading ? (
+        <Loading />
+      ) : (
+        <form className="signup-form" onSubmit={handleSubmit}>
+          <label>Username:</label>
+          <input type="text" name="username" onChange={handleChange} required />
 
-      <label>Password:</label>
-      <input type="password" name="password" onChange={handleChange} required />
+          <label>Password:</label>
+          <input
+            type="password"
+            name="password"
+            onChange={handleChange}
+            required
+          />
 
-      {/* <button type="submit">Sign Up</button> */}
-      <button type="submit" disabled={loading}>
-        {loading ? "Logging In..." : "Log In"}
-      </button>
+          {/* <button type="submit">Sign Up</button> */}
+          <button type="submit" disabled={loading}>
+            {loading ? "Logging In..." : "Log In"}
+          </button>
 
-      <label
-        onClick={() => {
-          navigate("/sign-up");
-        }}
-        className="redirect-label"
-      >
-        New user? <u>Sign up here</u>
-      </label>
-    </form>
+          <label
+            onClick={() => {
+              navigate("/sign-up");
+            }}
+            className="redirect-label"
+          >
+            New user? <u>Sign up here</u>
+          </label>
+        </form>
+      )}
+    </div>
   );
 }
