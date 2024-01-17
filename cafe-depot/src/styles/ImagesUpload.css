@@ -1,0 +1,125 @@
+.formDiv {
+    margin: 0px auto;
+    width: 100%;
+    max-width: 632px;
+    padding: 20px 16px;
+}
+
+.description {
+    flex-wrap: wrap;
+    display: flex;
+    width: 100%;
+    padding: 0px;
+    width: 100%;
+    max-width: 1280px;
+    margin: 0px auto;
+    padding: 0px 16px;
+    margin-bottom: 15px;
+    /* height: 108px */
+}
+
+
+.labelText {
+    font-weight: bold;
+    font-size: 1.125rem;
+    line-height: 1.5;
+    margin: 0px;
+    color: rgb(38, 38, 38);
+    text-align: left;
+}
+
+.descText {
+    border: 1px solid rgb(102, 102, 102);
+    border-radius: 2px;
+    resize: none;
+    width: 100%;
+    font-size: 14px;
+    padding: 8px;
+    min-height: 105px;
+    color: rgb(38, 38, 38);
+}
+
+.upload-and-create-button {
+    padding: 0px 16px;
+}
+
+.photos-container {
+    padding: 0px 16px !important
+}
+
+.photosLabel {
+    padding: 0px 16px;
+    margin-bottom: 8px;
+}
+
+.imageInputGroup {
+    margin: 0px auto;
+    padding: 0px 16px;
+    display: flex;
+    flex-wrap: wrap;
+    border: 0px;
+}
+
+.imageInputGroup>div {
+    padding: 0px 4px;
+}
+
+.imageInputWrapper {
+    width: 25%;
+    margin-bottom: 32px;
+}
+
+.imageInputLabel {
+    position: relative;
+    box-shadow: none;
+    padding-bottom: 100%;
+    display: block;
+}
+
+.imageInputLabel>div {
+
+    text-align: center;
+    vertical-align: middle;
+
+    padding: 8px;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    font-size: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    /* border: 2px dashed rgb(215, 215, 215); */
+    justify-content: center;
+    -moz-box-pack: center;
+}
+
+.caption {
+    font-weight: normal;
+    margin: 0px;
+    margin-bottom: 0px;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    color: rgb(116, 116, 116);
+}
+
+.imageInput {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+}
+
+
+.selectedImage {
+    position: absolute;
+    margin: 0px;
+    padding: 0px;
+    height: 100%;
+    width: 100%;
+    outline: none;
+    cursor: pointer;
+}
+
+.kdrJjL {
+    margin: 0px auto;
+}

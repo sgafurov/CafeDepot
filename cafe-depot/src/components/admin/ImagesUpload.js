@@ -3,7 +3,7 @@ import { ref, uploadBytesResumable } from "firebase/storage";
 import { storage } from "../../firebase";
 import uuid from "react-uuid";
 
-import "../../styles/AdminProfile.css";
+import "../../styles/ImagesUpload.css";
 
 export default function ImagesUpload() {
   const [imageFileArray, setImageFileArray] = useState([]); // image and metadata as caputured from file input
@@ -83,55 +83,56 @@ export default function ImagesUpload() {
   };
 
   return (
-    <>
-      <div className="imageInputGroup">
-        <div className="imageInputWrapper">
-          <label className="imageInputLabel">
-            <div>
-              <p type="caption1" className="caption">
-                Add a photo
-              </p>
-            </div>
-            <img className="selectedImage" src={imageURLArray[0]} />
-            <input
-              type="file"
-              className="imageInput"
-              onChange={handleImageSelect1}
-            />
-          </label>
+    <div>
+      <form className="formDiv">
+        <div className="imageInputGroup">
+          <div className="imageInputWrapper">
+            <label className="imageInputLabel">
+              <div>
+                <p type="caption1" className="caption">
+                  Add a photo
+                </p>
+              </div>
+              <img className="selectedImage" src={imageURLArray[0]} />
+              <input
+                type="file"
+                className="imageInput"
+                onChange={handleImageSelect1}
+              />
+            </label>
+          </div>
+          <div className="imageInputWrapper">
+            <label className="imageInputLabel">
+              <div className="imageInputLabel-div">
+                <p type="caption1" className="caption">
+                  Add a photo
+                </p>
+              </div>
+              <img className="selectedImage" src={imageURLArray[1]} />
+              <input
+                type="file"
+                className="imageInput"
+                onChange={handleImageSelect2}
+              />
+            </label>
+          </div>
         </div>
 
-        <div className="imageInputWrapper">
-          <label className="imageInputLabel">
-            <div>
-              <p type="caption1" className="caption">
-                Add a photo
-              </p>
-            </div>
-            <img className="selectedImage" src={imageURLArray[1]} />
-            <input
-              type="file"
-              className="imageInput"
-              onChange={handleImageSelect2}
-            />
-          </label>
-        </div>
-      </div>
-      <br />
-      {!clickedUpload ? (
-        <div className="upload-and-create-button">
-          <button
-            style={{ background: "grey", border: "none" }}
-            onClick={handleImageUpload}
-            value="Upload Images"
-          >
-            Upload images
-          </button>
-          {uploadProgress > 0 && <p>Upload Progress: {uploadProgress}%</p>}
-        </div>
-      ) : (
-        <></>
-      )}
-    </>
+        <br />
+        {!clickedUpload ? (
+          <div className="upload-and-create-button">
+            <button
+              style={{ background: "grey", border: "none" }}
+              onClick={handleImageUpload}
+            >
+              Upload Images
+            </button>
+          </div>
+        ) : (
+          <></>
+        )}
+        <br />
+      </form>
+    </div>
   );
 }
