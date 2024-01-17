@@ -15,6 +15,7 @@ export default function AdminProfile() {
     price: "",
     stock: "",
     category: "",
+    imageNames:[]
   });
   const [products, setProducts] = useState([
     {
@@ -23,6 +24,7 @@ export default function AdminProfile() {
       price: "",
       stock: "",
       category: "",
+      imageNames:[]
     },
   ]);
 
@@ -65,6 +67,7 @@ export default function AdminProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
+      // set imageNames attribute in item usestate
       setLoading(true);
       const response = await fetch(`${BASE_URL}/api/products/add`, {
         method: "POST",

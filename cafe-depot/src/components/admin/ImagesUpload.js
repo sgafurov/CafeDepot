@@ -18,42 +18,17 @@ export default function ImagesUpload() {
     console.log("imageNameArray: ", imageNameArray);
   }, [imageFileArray, imageURLArray, imageNameArray]);
 
-  const handleImageSelect1 = (e) => {
+  const handleImageSelect = (e, index) => {
     // overwrite image when new one is chosen
-    if (imageURLArray[0]) {
+    if (imageURLArray[index]) {
       setImageURLArray((prevImageArray) => {
         const updatedArray = [...prevImageArray];
-        updatedArray[0] = URL.createObjectURL(e.target.files[0]);
+        updatedArray[index] = URL.createObjectURL(e.target.files[0]);
         return updatedArray;
       });
       setImageFileArray((prevImageFileArray) => {
         const updatedArray = [...prevImageFileArray];
-        updatedArray[0] = e.target.files[0];
-        return updatedArray;
-      });
-    } else {
-      setImageURLArray((prevImageArray) => [
-        ...prevImageArray,
-        URL.createObjectURL(e.target.files[0]),
-      ]);
-      setImageFileArray((prevImageFileArray) => [
-        ...prevImageFileArray,
-        e.target.files[0],
-      ]);
-    }
-  };
-
-  const handleImageSelect2 = (e) => {
-    // overwrite image when new one is chosen
-    if (imageURLArray[1]) {
-      setImageURLArray((prevImageArray) => {
-        const updatedArray = [...prevImageArray];
-        updatedArray[1] = URL.createObjectURL(e.target.files[0]);
-        return updatedArray;
-      });
-      setImageFileArray((prevImageFileArray) => {
-        const updatedArray = [...prevImageFileArray];
-        updatedArray[1] = e.target.files[0];
+        updatedArray[index] = e.target.files[0];
         return updatedArray;
       });
     } else {
@@ -97,7 +72,8 @@ export default function ImagesUpload() {
               <input
                 type="file"
                 className="imageInput"
-                onChange={handleImageSelect1}
+                // onChange={handleImageSelect1}
+                onChange={(e) => handleImageSelect(e, 0)}
               />
             </label>
           </div>
@@ -112,7 +88,8 @@ export default function ImagesUpload() {
               <input
                 type="file"
                 className="imageInput"
-                onChange={handleImageSelect2}
+                // onChange={handleImageSelect2}
+                onChange={(e) => handleImageSelect(e, 1)}
               />
             </label>
           </div>
