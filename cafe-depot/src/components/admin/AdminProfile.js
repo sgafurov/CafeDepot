@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
 import Loading from "../loading/Loading";
+import { ref, uploadBytesResumable } from "firebase/storage";
+import { storage } from "../../firebase";
+import "../../styles/AdminProfile.css";
+
+import ImagesUpload from "./ImagesUpload";
 
 export default function AdminProfile() {
   const [loading, setLoading] = useState(false);
@@ -130,38 +135,16 @@ export default function AdminProfile() {
             <option value="espresso machines">Espresso Machines</option>
           </select>
 
+          <ImagesUpload />
           <button type="submit" disabled={loading}>
             {loading ? "Adding product..." : "Add product"}
           </button>
         </form>
       )}
-      <h3>current stock displayed here</h3>
+      <h3>Current Stock</h3>
       <div>
         {products &&
           products.map((product, index) => (
-            // <div key={index}>
-            //   <table>
-            //     <tbody>
-            //       <tr>
-            //         <td>Name:</td>
-            //         <td>{product.name}</td>
-            //       </tr>
-            //       <tr>
-            //         <td>Description:</td>
-            //         <td>{product.description}</td>
-            //       </tr>
-            //       <tr>
-            //         <td>Price:</td>
-            //         <td>${product.price}</td>
-            //       </tr>
-            //       <tr>
-            //         <td>Stock:</td>
-            //         <td>{product.stock}</td>
-            //       </tr>
-            //     </tbody>
-            //   </table>
-            // </div>
-            // Inside the map function where you render products
             <div
               key={index}
               style={{
