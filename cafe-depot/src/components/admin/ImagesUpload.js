@@ -5,18 +5,19 @@ import uuid from "react-uuid";
 
 import "../../styles/ImagesUpload.css";
 
-export default function ImagesUpload() {
+export default function ImagesUpload({ sendImageNamesToParent }) {
   const [imageFileArray, setImageFileArray] = useState([]); // image and metadata as caputured from file input
   const [imageURLArray, setImageURLArray] = useState([]); // image url representing image so we can display it on screen
   const [imageNameArray, setImageNameArray] = useState([]); // array of the image names as the way we randomized and stored it in firebase
-  const [uploadProgress, setUploadProgress] = useState(0);
+  const [imageNames, setImageNames] = useState("");
   const [clickedUpload, setClickedUpload] = useState(false);
 
   useEffect(() => {
     console.log("imageFileArray: ", imageFileArray);
     console.log("imageURLArray: ", imageURLArray);
     console.log("imageNameArray: ", imageNameArray);
-  }, [imageFileArray, imageURLArray, imageNameArray]);
+    console.log("imageNames: ", imageNames);
+  }, [imageFileArray, imageURLArray, imageNameArray, imageNames]);
 
   const handleImageSelect = (e, index) => {
     // overwrite image when new one is chosen
@@ -47,12 +48,24 @@ export default function ImagesUpload() {
     console.log("inside handleImageUpload", imageFileArray);
     if (imageFileArray.length > 0) {
       for (let i = 0; i < imageFileArray.length; i++) {
-        // TODO: randomize the storage location
         const randomImageName = uuid() + imageFileArray[i].name;
         setImageNameArray((prev) => [...prev, randomImageName]);
+        setImageNames((prevState) => {
+          // only append the '+' if prevstate is not empty
+          return prevState
+            ? prevState + "+" + randomImageName
+            : randomImageName;
+        });
+        //setImageNames((prevState) => prevState + "+" + randomImageName); // " ''+random1.png+random2.png" will have to trim it when you get it from get request and split string on the + icon
         const myRef = ref(storage, randomImageName); // image will be stored under this ref
         const uploadTask = uploadBytesResumable(myRef, imageFileArray[i]); // upload the image
       }
+      // Use the callback version of setImageNames
+      setImageNames((prevState) => {
+        sendImageNamesToParent(prevState);
+        return prevState;
+      });
+      //   sendImageNamesToParent(imageNames);
       setClickedUpload(true);
     }
   };

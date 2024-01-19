@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
 import Loading from "../loading/Loading";
-import { ref, uploadBytesResumable } from "firebase/storage";
+import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebase";
 import "../../styles/AdminProfile.css";
 
@@ -15,7 +15,7 @@ export default function AdminProfile() {
     price: "",
     stock: "",
     category: "",
-    imageNames:[]
+    imageNames: "",
   });
   const [products, setProducts] = useState([
     {
@@ -24,9 +24,11 @@ export default function AdminProfile() {
       price: "",
       stock: "",
       category: "",
-      imageNames:[]
+      imageNames: "",
+      imageNamesArray: [],
     },
   ]);
+  const [renderedImages, setRenderedImages] = useState({});
 
   useEffect(() => {
     console.log("inside useEffect");
@@ -67,7 +69,6 @@ export default function AdminProfile() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // set imageNames attribute in item usestate
       setLoading(true);
       const response = await fetch(`${BASE_URL}/api/products/add`, {
         method: "POST",
@@ -89,6 +90,54 @@ export default function AdminProfile() {
     } catch (error) {
       console.error("Error adding product:", error.message);
       alert("Error adding product: " + error.message);
+    }
+  };
+
+  const getImageNamesFromChild = (imageNames) => {
+    setItem({ ...item, imageNames: imageNames });
+    console.log("getImageNamesFromChild: " + imageNames);
+  };
+
+  // avoid the "Objects are not valid as a React child" issue.
+  useEffect(() => {
+    // Fetch image URLs when the component mounts or when products change
+    products.forEach((product) => {
+      if (product.imageNames) {
+        fetchImageUrls(product);
+      }
+    });
+  }, [products]);
+
+  const fetchImageUrls = async (product) => {
+    try {
+      let imageNamesArray = product.imageNames.split("+");
+      let urlArray = [];
+
+      for (let i = 0; i < imageNamesArray.length; i++) {
+        let imageName = imageNamesArray[i];
+        const imageRef = ref(storage, imageName);
+        let downloadUrl = await getDownloadURL(imageRef);
+        urlArray.push(downloadUrl);
+      }
+
+      // setRenderedImages(
+      //   urlArray.map((url, index) => (
+      //     <div key={index}>
+      //       <img src={url} alt={`Image ${index}`} width={100} />
+      //     </div>
+      //   ))
+      // );
+
+      setRenderedImages((prevRenderedImages) => ({
+        ...prevRenderedImages,
+        [product.id]: urlArray.map((url, index) => (
+          <div key={index}>
+            <img src={url} alt={`Image ${index}`} width={100} />
+          </div>
+        )),
+      }));
+    } catch (error) {
+      console.log("Error getting image URL:", error);
     }
   };
 
@@ -138,7 +187,8 @@ export default function AdminProfile() {
             <option value="espresso machines">Espresso Machines</option>
           </select>
 
-          <ImagesUpload />
+          <ImagesUpload sendImageNamesToParent={getImageNamesFromChild} />
+
           <button type="submit" disabled={loading}>
             {loading ? "Adding product..." : "Add product"}
           </button>
@@ -186,7 +236,24 @@ export default function AdminProfile() {
                     <td style={{ fontWeight: "bold", paddingRight: "10px" }}>
                       Category:
                     </td>
-                    <td>{}</td>
+                    <td>{product.category}</td>
+                  </tr>
+                  <tr>
+                    <td style={{ fontWeight: "bold", paddingRight: "10px" }}>
+                      Image Names:
+                    </td>
+                    {/* {product.imageNames &&
+                      product.imageNames.split("+").map((imageName) => (
+                        <>
+                          <td>{imageName}</td>
+                          <img src={imageName} />
+                        </>
+                      ))} */}
+                    {/* {product.imageNames &&
+                      renderProductImages(product.imageNames)} */}
+                    {/* {product.imageNames && renderProductImages(product.imageNames)} */}
+                    {/* {renderedImages} */}
+                    {renderedImages[product.id]}
                   </tr>
                 </tbody>
               </table>
