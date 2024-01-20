@@ -25,7 +25,6 @@ export default function AdminProfile() {
       stock: "",
       category: "",
       imageNames: "",
-      imageNamesArray: [],
     },
   ]);
   const [renderedImages, setRenderedImages] = useState({});

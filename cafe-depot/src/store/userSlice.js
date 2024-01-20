@@ -36,7 +36,6 @@ export const userSlice = createSlice({
       state.username = "";
       state.password = "";
       state.email = "";
-      state.address = "";
       state.isLoggedIn = false;
     },
   },

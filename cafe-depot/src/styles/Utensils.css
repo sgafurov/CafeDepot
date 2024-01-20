@@ -6,6 +6,7 @@
 .utensil-item {
     list-style: none;
     display: block;
+    min-width: 200px;
 }
 
 .utensil-item>div {

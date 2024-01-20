@@ -8,16 +8,14 @@ import "../../styles/ImagesUpload.css";
 export default function ImagesUpload({ sendImageNamesToParent }) {
   const [imageFileArray, setImageFileArray] = useState([]); // image and metadata as caputured from file input
   const [imageURLArray, setImageURLArray] = useState([]); // image url representing image so we can display it on screen
-  const [imageNameArray, setImageNameArray] = useState([]); // array of the image names as the way we randomized and stored it in firebase
-  const [imageNames, setImageNames] = useState("");
+  const [imageNames, setImageNames] = useState(""); // string of all the image names as the way we randomized and stored it in firebase
   const [clickedUpload, setClickedUpload] = useState(false);
 
   useEffect(() => {
     console.log("imageFileArray: ", imageFileArray);
     console.log("imageURLArray: ", imageURLArray);
-    console.log("imageNameArray: ", imageNameArray);
     console.log("imageNames: ", imageNames);
-  }, [imageFileArray, imageURLArray, imageNameArray, imageNames]);
+  }, [imageFileArray, imageURLArray, imageNames]);
 
   const handleImageSelect = (e, index) => {
     // overwrite image when new one is chosen
@@ -49,7 +47,6 @@ export default function ImagesUpload({ sendImageNamesToParent }) {
     if (imageFileArray.length > 0) {
       for (let i = 0; i < imageFileArray.length; i++) {
         const randomImageName = uuid() + imageFileArray[i].name;
-        setImageNameArray((prev) => [...prev, randomImageName]);
         setImageNames((prevState) => {
           // only append the '+' if prevstate is not empty
           return prevState
