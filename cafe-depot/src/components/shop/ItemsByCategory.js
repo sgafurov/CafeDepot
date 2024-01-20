@@ -1,11 +1,12 @@
 import { useState, useEffect } from "react";
-import utensilsImage from "../../assets/products/utensils.jpg";
 import { BASE_URL } from "../../constants";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebase";
+import { useParams } from "react-router-dom";
 import "../../styles/Utensils.css";
 
-export default function Utensils() {
+export default function ItemsByCategory() {
+  const { category } = useParams();
   const [quantities, setQuantities] = useState([]);
   const [products, setProducts] = useState([
     {
@@ -20,9 +21,13 @@ export default function Utensils() {
   const [renderedImages, setRenderedImages] = useState({});
 
   useEffect(() => {
+    console.log("params ", category);
+  }, [category]);
+
+  useEffect(() => {
     // Initialize quantities array with default quantity (1) for each product
     setQuantities(new Array(products.length).fill(1));
-  }, [products]);
+  }, [category, products]);
 
   useEffect(() => {
     console.log("inside useEffect");
@@ -30,7 +35,7 @@ export default function Utensils() {
     const fetchData = async () => {
       console.log("inside fetchData");
       try {
-        const response = await fetch(`${BASE_URL}/api/products/utensils`, {
+        const response = await fetch(`${BASE_URL}/api/products/${category}`, {
           method: "GET",
           mode: "cors",
           headers: {
@@ -52,7 +57,7 @@ export default function Utensils() {
       }
     };
     fetchData();
-  }, []);
+  }, [category]);
   // avoid the "Objects are not valid as a React child" issue.
   useEffect(() => {
     // Fetch image URLs when the component mounts or when products change
@@ -61,7 +66,7 @@ export default function Utensils() {
         fetchImageUrls(product);
       }
     });
-  }, [products]);
+  }, [category, products]);
 
   const fetchImageUrls = async (product) => {
     try {
@@ -87,17 +92,6 @@ export default function Utensils() {
       console.log("Error getting image URL:", error);
     }
   };
-
-  // const increaseQuantity = () => {
-  //   setQuantity(quantity + 1);
-  // };
-
-  // const decreaseQuantity = () => {
-  //   if (quantity > 1) {
-  //     setQuantity(quantity - 1);
-  //   }
-  // };
-
   const increaseQuantity = (index) => {
     setQuantities((prevQuantities) => {
       const newQuantities = [...prevQuantities];
@@ -120,26 +114,6 @@ export default function Utensils() {
   // map through each utensil, create a li element with an onClick event that calls addToCart(utensil) passing it the current utensil
   return (
     <div className="products-list">
-      {/* <ul className="utensils-list">
-        <li className="utensil-item">
-          <div>
-            <img src={utensilsImage} width={200} alt={"utensils"} />
-            <div className="details-text">
-              <p className="title">Metal utensils</p>
-              <p className="price">pack (50 forks, 50 spoons, 50 knives)</p>
-              <p className="price">$10</p>
-            </div>
-            <div className="quantity-controls">
-              <button onClick={decreaseQuantity}>-</button>
-              <p>{quantity}</p>
-              <button onClick={increaseQuantity}>+</button>
-            </div>
-
-            <button className="add-to-cart">Add to Cart</button>
-          </div>
-        </li>
-      </ul> */}
-
       <ul className="utensils-list">
         {products &&
           products.map((product, index) => (
@@ -153,9 +127,6 @@ export default function Utensils() {
                     <p className="price">${product.price}</p>
                   </div>
                   <div className="quantity-controls">
-                    {/* <button onClick={decreaseQuantity}>-</button>
-                    <p>{quantity}</p>
-                    <button onClick={increaseQuantity}>+</button> */}
                     <button onClick={() => decreaseQuantity(index)}>-</button>
                     <p>{quantities[index]}</p>
                     <button onClick={() => increaseQuantity(index)}>+</button>

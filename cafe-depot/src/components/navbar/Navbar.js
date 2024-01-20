@@ -1,10 +1,15 @@
 import logo from "../../assets/cafe-depot-high-resolution-logo-transparent.png";
 import bagIcon from "../../assets/icons/bag.png";
 import profileIcon from "../../assets/icons/user.png";
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import "../../styles/Navbar.css";
 
 export default function Navbar() {
+  let navigate = useNavigate();
+  const goToLink = (linkName) => {
+    navigate(`/shop/${linkName}`);
+  };
   return (
     <div className="outer-navbar">
       <div className="inner-navbar">
@@ -13,6 +18,20 @@ export default function Navbar() {
             <div className="dropdown">
               <button className="dropbtn">Shop⌄</button>
               <div className="dropdown-content">
+                {/* <p
+                  onClick={() => {
+                    goToLink("utensils");
+                  }}
+                >
+                  Utensils
+                </p>
+                <p
+                  onClick={() => {
+                    goToLink("cups");
+                  }}
+                >
+                  Cups
+                </p> */}
                 <Link to="/shop/utensils">Utensils</Link>
                 <Link to="/shop/cups">Cups</Link>
                 <Link to="/shop/plates">Plates</Link>
@@ -48,7 +67,12 @@ export default function Navbar() {
             <div className="icon-container">
               <li className="nav-link">
                 <Link to="/sign-up">
-                <img src={profileIcon} alt="Logo" className="logo" width={30} />
+                  <img
+                    src={profileIcon}
+                    alt="Logo"
+                    className="logo"
+                    width={30}
+                  />
                 </Link>
               </li>
               <li className="nav-link">
