@@ -2,6 +2,8 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../constants";
 import Loading from "../loading/Loading";
+import { auth } from "../../firebase";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import "../../styles/SignUp.css";
 
 export default function SignUp() {
@@ -20,30 +22,47 @@ export default function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      setLoading(true);
-      const response = await fetch(`${BASE_URL}/api/users/sign-up`, {
-        method: "POST",
-        mode: "cors",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
-      console.log("response ", response);
-      setLoading(false);
-      if (response.ok) {
-        const user = await response.json();
-        console.log("User created successfully:", user);
+    // try {
+    //   setLoading(true);
+    //   const response = await fetch(`${BASE_URL}/api/users/sign-up`, {
+    //     method: "POST",
+    //     mode: "cors",
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //     },
+    //     body: JSON.stringify(formData),
+    //   });
+    //   console.log("response ", response);
+    //   setLoading(false);
+    //   if (response.ok) {
+    //     const user = await response.json();
+    //     console.log("User created successfully:", user);
+    //     navigate("/log-in");
+    //   } else {
+    //     const errorData = await response.json();
+    //     throw errorData;
+    //   }
+    // } catch (error) {
+    //   console.error("Error creating user:", error.message);
+    //   alert("Error creating user: " + error.message);
+    // }
+
+    // FIREBASE AUTH
+    setLoading(true);
+    createUserWithEmailAndPassword(auth, formData.email, formData.password)
+      .then((userCredential) => {
+        // Signed up
+        setLoading(false);
+        const user = userCredential.user;
+        console.log("user signed up: ", user);
         navigate("/log-in");
-      } else {
-        const errorData = await response.json();
-        throw errorData;
-      }
-    } catch (error) {
-      console.error("Error creating user:", error.message);
-      alert("Error creating user: " + error.message);
-    }
+      })
+      .catch((error) => {
+        setLoading(false);
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        alert(errorMessage);
+      });
   };
 
   return (

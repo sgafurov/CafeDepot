@@ -120,14 +120,16 @@ export default function ItemsByCategory() {
             <div key={index}>
               <li className="utensil-item">
                 <div>
-                  <div className="image-container">
-                  <div className="first-image">
-                    {renderedImages && renderedImages[product.id][0]}
+                  {renderedImages && renderedImages[product.id] && (
+                    <div className="image-container">
+                      <div className="first-image">
+                        {renderedImages[product.id][0]}
+                      </div>
+                      <div className="second-image">
+                        {renderedImages[product.id][1]}
+                      </div>
                     </div>
-                    <div className="second-image">
-                      {renderedImages && renderedImages[product.id][1]}
-                    </div>
-                  </div>
+                  )}
                   <div className="details-text">
                     <p className="title">{product.name}</p>
                     <p className="price">{product.description}</p>
