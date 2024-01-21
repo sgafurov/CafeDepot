@@ -59,7 +59,11 @@ export default function LogIn() {
         setLoading(false);
         const user = userCredential.user;
         console.log("user logged in: ", user);
-        navigate("/admin-profile");
+        if (user.email === "dev@gmail.com") {
+          navigate("/admin-profile");
+        } else {
+          navigate("/profile");
+        }
       })
       .catch((error) => {
         setLoading(false);

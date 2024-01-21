@@ -4,10 +4,14 @@ import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebase";
 import { useParams } from "react-router-dom";
 import "../../styles/ItemsByCategory.css";
+import Cart from "./Cart";
 
 export default function ItemsByCategory() {
   const { category } = useParams();
   const [quantities, setQuantities] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
+  const [clickedAddToCart, setClickedAddToCart] = useState(false);
+  const [renderedImages, setRenderedImages] = useState({});
   const [products, setProducts] = useState([
     {
       name: "",
@@ -18,11 +22,10 @@ export default function ItemsByCategory() {
       imageNames: "",
     },
   ]);
-  const [renderedImages, setRenderedImages] = useState({});
 
   useEffect(() => {
-    console.log("params ", category);
-  }, [category]);
+    console.log("renderedImages = ", renderedImages);
+  }, []);
 
   useEffect(() => {
     // Initialize quantities array with default quantity (1) for each product
@@ -58,6 +61,7 @@ export default function ItemsByCategory() {
     };
     fetchData();
   }, [category]);
+
   // avoid the "Objects are not valid as a React child" issue.
   useEffect(() => {
     // Fetch image URLs when the component mounts or when products change
@@ -67,6 +71,34 @@ export default function ItemsByCategory() {
       }
     });
   }, [category, products]);
+
+  const handleAddToCart = (product, quantity) => {
+    setClickedAddToCart(true);
+    const existingCartItemIndex = cartItems.findIndex(
+      (cartItem) => cartItem.product.id === product.id
+    );
+    if (existingCartItemIndex !== -1) {
+      // Update quantity if the item already exists
+      setCartItems((prevCartItems) => {
+        const updatedCartItems = [...prevCartItems];
+        console.log(" updatedCartItems[existingCartItemIndex].quantity = ",  updatedCartItems[existingCartItemIndex].quantity)
+        updatedCartItems[existingCartItemIndex].quantity = quantity;
+        return updatedCartItems;
+      });
+    } else {
+      // Add a new entry if the item does not exist
+      setCartItems((prevCartItems) => [
+        ...prevCartItems,
+        { product, quantity },
+      ]);
+    }
+
+    // setCartItems((prevCartItems) => [...prevCartItems, { product, quantity }]);
+  };
+
+  const handleCartClose = () => {
+    setClickedAddToCart(false);
+  };
 
   const fetchImageUrls = async (product) => {
     try {
@@ -92,6 +124,7 @@ export default function ItemsByCategory() {
       console.log("Error getting image URL:", error);
     }
   };
+
   const increaseQuantity = (index) => {
     setQuantities((prevQuantities) => {
       const newQuantities = [...prevQuantities];
@@ -114,6 +147,9 @@ export default function ItemsByCategory() {
   // map through each utensil, create a li element with an onClick event that calls addToCart(utensil) passing it the current utensil
   return (
     <div className="products-list">
+      {clickedAddToCart && (
+        <Cart onClose={handleCartClose} cartItems={cartItems} />
+      )}
       <ul className="utensils-list">
         {products &&
           products.map((product, index) => (
@@ -140,7 +176,15 @@ export default function ItemsByCategory() {
                     <p>{quantities[index]}</p>
                     <button onClick={() => increaseQuantity(index)}>+</button>
                   </div>
-                  <button className="add-to-cart">Add to Cart</button>
+                  <button
+                    className="add-to-cart"
+                    onClick={() => {
+                      // handleAddToCart(products[index]);
+                      handleAddToCart(products[index], quantities[index]);
+                    }}
+                  >
+                    Add to Cart
+                  </button>
                 </div>
               </li>
             </div>

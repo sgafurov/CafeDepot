@@ -6,10 +6,11 @@ import SignUp from "./components/user/SignUp";
 import LogIn from "./components/user/LogIn";
 import Profile from "./components/user/Profile";
 import AdminProfile from "./components/admin/AdminProfile";
-import "./App.css";
 import ItemsByCategory from "./components/shop/ItemsByCategory";
+import Cart from "./components/shop/Cart";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
+import "./App.css";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -17,15 +18,11 @@ function App() {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/auth.user
         const uid = user.uid;
         setUser(user);
         console.log("user is logged in");
-        // ...
       } else {
         // User is signed out
-        // ...
         console.log("user is logged out");
         setUser(null);
       }
@@ -41,6 +38,7 @@ function App() {
           <Route path="/shop/:category" element={<ItemsByCategory />} />
           <Route exact path="/sign-up" element={<SignUp />} />
           <Route exact path="/log-in" element={<LogIn />} />
+          <Route exact path="/cart" element={<Cart />} />
           <Route
             exact
             path="/profile"

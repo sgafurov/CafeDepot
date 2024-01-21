@@ -15,9 +15,9 @@ export default function Navbar() {
 
   const handleLogout = async () => {
     try {
-      await auth.signOut()
+      await auth.signOut();
       console.log("User logged out successfully");
-      navigate("/")
+      navigate("/");
     } catch (error) {
       console.error("Error logging out:", error.message);
     }
@@ -26,15 +26,11 @@ export default function Navbar() {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       if (user) {
-        // User is signed in, see docs for a list of available properties
-        // https://firebase.google.com/docs/reference/js/auth.user
         const uid = user.uid;
         setUser(user);
         console.log("user is logged in");
-        // ...
       } else {
         // User is signed out
-        // ...
         console.log("user is logged out");
         setUser(null);
       }
@@ -106,7 +102,9 @@ export default function Navbar() {
                 </Link>
               </li>
               <li className="nav-link">
-                <img src={bagIcon} alt="Logo" className="logo" width={30} />
+                <Link to="/cart">
+                  <img src={bagIcon} alt="Logo" className="logo" width={30} />
+                </Link>
               </li>
               {user && (
                 <li className="nav-link">
