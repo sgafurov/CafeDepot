@@ -9,7 +9,7 @@ import Cart from "./Cart";
 export default function ItemsByCategory() {
   const { category } = useParams();
   const [quantities, setQuantities] = useState([]);
-  const [cartItems, setCartItems] = useState([]);
+  const [cartItems, setCartItems] = useState([]); // [ {product, quantity}, {p,q},... ]  PROP
   const [clickedAddToCart, setClickedAddToCart] = useState(false);
   const [renderedImages, setRenderedImages] = useState({});
   const [products, setProducts] = useState([
@@ -22,10 +22,6 @@ export default function ItemsByCategory() {
       imageNames: "",
     },
   ]);
-
-  useEffect(() => {
-    console.log("renderedImages = ", renderedImages);
-  }, []);
 
   useEffect(() => {
     // Initialize quantities array with default quantity (1) for each product
@@ -72,34 +68,6 @@ export default function ItemsByCategory() {
     });
   }, [category, products]);
 
-  const handleAddToCart = (product, quantity) => {
-    setClickedAddToCart(true);
-    const existingCartItemIndex = cartItems.findIndex(
-      (cartItem) => cartItem.product.id === product.id
-    );
-    if (existingCartItemIndex !== -1) {
-      // Update quantity if the item already exists
-      setCartItems((prevCartItems) => {
-        const updatedCartItems = [...prevCartItems];
-        console.log(" updatedCartItems[existingCartItemIndex].quantity = ",  updatedCartItems[existingCartItemIndex].quantity)
-        updatedCartItems[existingCartItemIndex].quantity = quantity;
-        return updatedCartItems;
-      });
-    } else {
-      // Add a new entry if the item does not exist
-      setCartItems((prevCartItems) => [
-        ...prevCartItems,
-        { product, quantity },
-      ]);
-    }
-
-    // setCartItems((prevCartItems) => [...prevCartItems, { product, quantity }]);
-  };
-
-  const handleCartClose = () => {
-    setClickedAddToCart(false);
-  };
-
   const fetchImageUrls = async (product) => {
     try {
       let imageNamesArray = product.imageNames.split("+");
@@ -125,6 +93,46 @@ export default function ItemsByCategory() {
     }
   };
 
+  const handleAddToCart = (product, quantity) => {
+    setClickedAddToCart(true);
+    const existingCartItemIndex = cartItems.findIndex(
+      (cartItem) => cartItem.product.id === product.id
+    );
+    if (existingCartItemIndex !== -1) {
+      // Update quantity if the item already exists
+      setCartItems((prevCartItems) => {
+        const updatedCartItems = [...prevCartItems];
+        console.log(
+          " updatedCartItems[existingCartItemIndex].quantity = ",
+          updatedCartItems[existingCartItemIndex].quantity
+        );
+        updatedCartItems[existingCartItemIndex].quantity = quantity;
+        return updatedCartItems;
+      });
+    } else {
+      // Add a new entry if the item does not exist
+      setCartItems((prevCartItems) => [
+        ...prevCartItems,
+        { product, quantity },
+      ]);
+    }
+
+    // setCartItems((prevCartItems) => [...prevCartItems, { product, quantity }]);
+  };
+
+  // PROP
+  const handleCartClose = () => {
+    setClickedAddToCart(false);
+  };
+
+  // PROP
+  const handleRemoveItem = (itemId) => {
+    // Filter out the removed item from the cartItems state
+    setCartItems((prevCartItems) =>
+      prevCartItems.filter((item) => item.product.id !== itemId)
+    );
+  };
+
   const increaseQuantity = (index) => {
     setQuantities((prevQuantities) => {
       const newQuantities = [...prevQuantities];
@@ -148,7 +156,11 @@ export default function ItemsByCategory() {
   return (
     <div className="products-list">
       {clickedAddToCart && (
-        <Cart onClose={handleCartClose} cartItems={cartItems} />
+        <Cart
+          onClose={handleCartClose}
+          cartItems={cartItems}
+          onRemoveItem={handleRemoveItem}
+        />
       )}
       <ul className="utensils-list">
         {products &&

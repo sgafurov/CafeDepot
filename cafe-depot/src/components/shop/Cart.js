@@ -6,6 +6,12 @@ export default function Cart({ onClose, cartItems, onRemoveItem }) {
   //   }
   const [showCart, setShowCart] = useState(true);
 
+  const handleRemoveItem = (itemId) => {
+    if (onRemoveItem) {
+      onRemoveItem(itemId);
+    }
+  };
+
   return (
     <>
       {showCart && (
@@ -36,7 +42,7 @@ export default function Cart({ onClose, cartItems, onRemoveItem }) {
                         Quantity: {item.quantity}
                       </span>
                     </div>
-                    <button onClick={() => onRemoveItem(item.id)}>
+                    <button onClick={() => handleRemoveItem(item.product.id)}>
                       Remove
                     </button>
                   </li>
@@ -45,7 +51,7 @@ export default function Cart({ onClose, cartItems, onRemoveItem }) {
               <p className="total-price">
                 Total: $
                 {cartItems.reduce(
-                  (total, item) => total + (item.product.price * item.quantity),
+                  (total, item) => total + item.product.price * item.quantity,
                   0
                 )}
               </p>
