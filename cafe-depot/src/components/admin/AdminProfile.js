@@ -142,6 +142,33 @@ export default function AdminProfile() {
     }
   };
 
+  const handleDeleteProduct = async (productId) => {
+    console.log("inside handleDeleteProduct with productId = " + productId);
+    try {
+      const response = await fetch(
+        `${BASE_URL}/api/products/delete/${productId}`,
+        {
+          method: "POST",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("response ", response);
+      if (response.ok) {
+        alert("Product removed successfully");
+      } else {
+        alert("Failed to remove product");
+        const errorData = await response.json();
+        throw errorData;
+      }
+    } catch (error) {
+      console.error("Error deleting product:", error.message);
+      alert("Error deleting product: " + error.message);
+    }
+  };
+
   return (
     <div>
       <h1 className="text-center">Add Product</h1>
@@ -242,6 +269,13 @@ export default function AdminProfile() {
                     <div style={{ display: "flex" }}>
                       {renderedImages[product.id]}
                     </div>
+                    <button
+                      onClick={() => {
+                        handleDeleteProduct(product.id);
+                      }}
+                    >
+                      Delete
+                    </button>
                   </tr>
                 </tbody>
               </table>

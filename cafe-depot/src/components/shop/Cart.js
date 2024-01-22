@@ -22,7 +22,7 @@ export default function Cart({ onClose, cartItems, onRemoveItem }) {
             onClick={() => {
               setShowCart(false);
               if (cartItems) {
-                onClose();
+                onClose(); // sends to parent component
               }
             }}
           >
