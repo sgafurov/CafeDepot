@@ -2,7 +2,6 @@
     margin: 0px auto;
     width: 100%;
     max-width: 632px;
-    padding: 20px 16px;
 }
 
 .description {
@@ -54,19 +53,9 @@
 
 .imageInputGroup {
     margin: 0px auto;
-    padding: 0px 16px;
     display: flex;
-    flex-wrap: wrap;
     border: 0px;
-}
-
-.imageInputGroup>div {
-    padding: 0px 4px;
-}
-
-.imageInputWrapper {
-    width: 25%;
-    margin-bottom: 32px;
+    justify-content: space-evenly;
 }
 
 .imageInputLabel {
@@ -77,11 +66,8 @@
 }
 
 .imageInputLabel>div {
-
     text-align: center;
     vertical-align: middle;
-
-    padding: 8px;
     position: absolute;
     height: 100%;
     width: 100%;
@@ -90,13 +76,11 @@
     flex-direction: column;
     /* border: 2px dashed rgb(215, 215, 215); */
     justify-content: center;
-    -moz-box-pack: center;
 }
 
 .caption {
     font-weight: normal;
-    margin: 0px;
-    margin-bottom: 0px;
+    margin: 0 auto;
     font-size: 0.75rem;
     line-height: 1.5;
     color: rgb(116, 116, 116);
@@ -118,8 +102,4 @@
     width: 100%;
     outline: none;
     cursor: pointer;
-}
-
-.kdrJjL {
-    margin: 0px auto;
 }

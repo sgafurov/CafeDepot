@@ -5,7 +5,10 @@ import uuid from "react-uuid";
 
 import "../../styles/ImagesUpload.css";
 
-export default function ImagesUpload({ sendImageNamesToParent }) {
+export default function ImagesUpload({
+  sendImageNamesToParent,
+  setImagesUploaded,
+}) {
   const [imageFileArray, setImageFileArray] = useState([]); // image and metadata as caputured from file input
   const [imageURLArray, setImageURLArray] = useState([]); // image url representing image so we can display it on screen
   const [imageNames, setImageNames] = useState(""); // string of all the image names as the way we randomized and stored it in firebase
@@ -53,7 +56,6 @@ export default function ImagesUpload({ sendImageNamesToParent }) {
             ? prevState + "+" + randomImageName
             : randomImageName;
         });
-        //setImageNames((prevState) => prevState + "+" + randomImageName); // " ''+random1.png+random2.png" will have to trim it when you get it from get request and split string on the + icon
         const myRef = ref(storage, randomImageName); // image will be stored under this ref
         const uploadTask = uploadBytesResumable(myRef, imageFileArray[i]); // upload the image
       }
@@ -61,8 +63,8 @@ export default function ImagesUpload({ sendImageNamesToParent }) {
       setImageNames((prevState) => {
         sendImageNamesToParent(prevState);
         return prevState;
-      });
-      //   sendImageNamesToParent(imageNames);
+      }); //   sendImageNamesToParent(imageNames);
+      setImagesUploaded(true);
       setClickedUpload(true);
     }
   };
@@ -82,14 +84,13 @@ export default function ImagesUpload({ sendImageNamesToParent }) {
               <input
                 type="file"
                 className="imageInput"
-                // onChange={handleImageSelect1}
                 onChange={(e) => handleImageSelect(e, 0)}
               />
             </label>
           </div>
           <div className="imageInputWrapper">
             <label className="imageInputLabel">
-              <div className="imageInputLabel-div">
+              <div>
                 <p type="caption1" className="caption">
                   Add a photo
                 </p>
@@ -98,7 +99,6 @@ export default function ImagesUpload({ sendImageNamesToParent }) {
               <input
                 type="file"
                 className="imageInput"
-                // onChange={handleImageSelect2}
                 onChange={(e) => handleImageSelect(e, 1)}
               />
             </label>

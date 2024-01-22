@@ -28,6 +28,7 @@ export default function AdminProfile() {
     },
   ]);
   const [renderedImages, setRenderedImages] = useState({});
+  const [imagesUploaded, setImagesUploaded] = useState(false);
 
   useEffect(() => {
     console.log("inside useEffect");
@@ -86,6 +87,7 @@ export default function AdminProfile() {
         const errorData = await response.json();
         throw errorData;
       }
+      setImagesUploaded(false); //set it back to false because the form will clear yet the state will remain 'true' from the ImagesUpload component
     } catch (error) {
       console.error("Error adding product:", error.message);
       alert("Error adding product: " + error.message);
@@ -142,7 +144,7 @@ export default function AdminProfile() {
 
   return (
     <div>
-      <h1 className="text-center">Admin Profile</h1>
+      <h1 className="text-center">Add Product</h1>
       {loading ? (
         <Loading />
       ) : (
@@ -186,61 +188,47 @@ export default function AdminProfile() {
             <option value="espresso machines">Espresso Machines</option>
           </select>
 
-          <ImagesUpload sendImageNamesToParent={getImageNamesFromChild} />
+          <ImagesUpload
+            sendImageNamesToParent={getImageNamesFromChild}
+            setImagesUploaded={setImagesUploaded}
+          />
 
-          <button type="submit" disabled={loading}>
-            {loading ? "Adding product..." : "Add product"}
-          </button>
+          {imagesUploaded && (
+            <button type="submit" disabled={loading}>
+              {loading ? "Adding product..." : "Add product"}
+            </button>
+          )}
         </form>
       )}
       <h3>Current Stock</h3>
-      <div>
+      <div className="product-container">
         {products &&
           products.map((product, index) => (
-            <div
-              key={index}
-              style={{
-                marginBottom: "20px",
-                border: "1px solid #ddd",
-                padding: "10px",
-              }}
-            >
-              <table style={{ width: "100%" }}>
+            <div key={index}>
+              <table className="product-table">
                 <tbody>
-                  <tr style={{ borderBottom: "1px solid #ddd" }}>
-                    <td style={{ fontWeight: "bold", paddingRight: "10px" }}>
-                      Name:
-                    </td>
+                  <tr>
+                    <td>Name:</td>
                     <td>{product.name}</td>
                   </tr>
-                  <tr style={{ borderBottom: "1px solid #ddd" }}>
-                    <td style={{ fontWeight: "bold", paddingRight: "10px" }}>
-                      Description:
-                    </td>
+                  <tr>
+                    <td>Description:</td>
                     <td>{product.description}</td>
                   </tr>
-                  <tr style={{ borderBottom: "1px solid #ddd" }}>
-                    <td style={{ fontWeight: "bold", paddingRight: "10px" }}>
-                      Price:
-                    </td>
+                  <tr>
+                    <td>Price:</td>
                     <td>${product.price}</td>
                   </tr>
                   <tr>
-                    <td style={{ fontWeight: "bold", paddingRight: "10px" }}>
-                      Stock:
-                    </td>
+                    <td>Stock:</td>
                     <td>{product.stock}</td>
                   </tr>
                   <tr>
-                    <td style={{ fontWeight: "bold", paddingRight: "10px" }}>
-                      Category:
-                    </td>
+                    <td>Category:</td>
                     <td>{product.category}</td>
                   </tr>
                   <tr>
-                    <td style={{ fontWeight: "bold", paddingRight: "10px" }}>
-                      Image Names:
-                    </td>
+                    <td>Images:</td>
                     {/* {product.imageNames &&
                       product.imageNames.split("+").map((imageName) => (
                         <>
@@ -251,8 +239,9 @@ export default function AdminProfile() {
                     {/* {product.imageNames &&
                       renderProductImages(product.imageNames)} */}
                     {/* {product.imageNames && renderProductImages(product.imageNames)} */}
-                    {/* {renderedImages} */}
-                    {renderedImages[product.id]}
+                    <div style={{ display: "flex" }}>
+                      {renderedImages[product.id]}
+                    </div>
                   </tr>
                 </tbody>
               </table>
