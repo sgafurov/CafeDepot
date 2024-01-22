@@ -59,6 +59,7 @@
 .item-info {
     display: flex;
     flex-direction: column;
+    text-align: left;
 }
 
 .item-name {
@@ -69,26 +70,26 @@
     color: #888;
 }
 
-.cart-container button {
-    background-color: #dc3545;
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-}
-
-.cart-container button:hover {
-    background-color: #c82333;
-}
-
 .total-price {
     margin-top: 10px;
     font-weight: bold;
 }
 
-.clear-cart-btn {
+.remove-btn {
+    background-color: #3e3e3e;
+    color: #fff;
+    border: none;
+    padding: 6px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.remove-btn:hover {
+    background-color: #c82333;
+}
+
+.checkout-btn {
     background-color: #007bff;
     color: #fff;
     border: none;
@@ -98,6 +99,6 @@
     transition: background-color 0.3s;
 }
 
-.clear-cart-btn:hover {
+.checkout-btn:hover {
     background-color: #0056b3;
 }

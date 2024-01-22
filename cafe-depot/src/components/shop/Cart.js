@@ -42,7 +42,10 @@ export default function Cart({ onClose, cartItems, onRemoveItem }) {
                         Quantity: {item.quantity}
                       </span>
                     </div>
-                    <button onClick={() => handleRemoveItem(item.product.id)}>
+                    <button
+                      className="remove-btn"
+                      onClick={() => handleRemoveItem(item.product.id)}
+                    >
                       Remove
                     </button>
                   </li>
@@ -55,14 +58,16 @@ export default function Cart({ onClose, cartItems, onRemoveItem }) {
                   0
                 )}
               </p>
-              <button
-                className="clear-cart-btn"
-                // onClick={() => {
-                //   handleCheckout();
-                // }}
-              >
-                Checkout
-              </button>
+              {cartItems.length>0 && (
+                <button
+                  className="checkout-btn"
+                  // onClick={() => {
+                  //   handleCheckout();
+                  // }}
+                >
+                  Checkout
+                </button>
+              )}
             </>
           )}
         </div>
