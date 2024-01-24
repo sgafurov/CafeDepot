@@ -92,7 +92,16 @@ export default function Navbar() {
           <li className="nav-link">
             <div className="icon-container">
               <li className="nav-link">
-                <Link to="/sign-up">
+                {/* if user is not logged in, display sign up page. if they are, display profile page (or admin page if they are dev) */}
+                <Link
+                  to={
+                    !user
+                      ? "/sign-up"
+                      : user && user.email === "dev@gmail.com"
+                      ? "/admin-profile"
+                      : "/profile"
+                  }
+                >
                   <img
                     src={profileIcon}
                     alt="Logo"
