@@ -12,8 +12,8 @@ export default function ItemsByCategory() {
   const { category } = useParams();
   const dispatch = useDispatch();
 
+  const [showCart, setShowCart] = useState(false);
   const [quantities, setQuantities] = useState([]);
-  const [clickedAddToCart, setClickedAddToCart] = useState(false);
   const [renderedImages, setRenderedImages] = useState({});
   const [products, setProducts] = useState([
     {
@@ -93,14 +93,13 @@ export default function ItemsByCategory() {
     }
   };
 
-  const handleAddToCart = (product, quantity) => {
-    setClickedAddToCart(true);
-    dispatch(addToCart({ product, quantity }));
+  const toggleCart = () => {
+    setShowCart(!showCart);
   };
 
-  // PROP
-  const handleCartClose = () => {
-    setClickedAddToCart(false);
+  const handleAddToCart = (product, quantity) => {
+    setShowCart(true);
+    dispatch(addToCart({ product, quantity }));
   };
 
   const increaseQuantity = (index) => {
@@ -123,13 +122,7 @@ export default function ItemsByCategory() {
 
   return (
     <div className="products-list">
-      {clickedAddToCart && (
-        <Cart
-          onClose={handleCartClose}
-          // cartItems={cartItems}
-          // onRemoveItem={handleRemoveItem}
-        />
-      )}
+      {showCart && <Cart onClose={toggleCart} showCart={showCart} />}
       <ul className="utensils-list">
         {products &&
           products.map((product, index) => (

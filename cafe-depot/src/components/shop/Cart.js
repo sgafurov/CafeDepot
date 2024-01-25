@@ -2,15 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { removeFromCart } from "../../store/cartSlice";
-import { useSelector } from 'react-redux';
+import { useSelector } from "react-redux";
 import "../../styles/Cart.css";
 
-export default function Cart({ onClose, cartItemsPropsNotUsedForNow, onRemoveItem }) {
-  let dispatch = useDispatch()
+export default function Cart({ showCart, onClose }) {
+  let dispatch = useDispatch();
   let navigate = useNavigate();
 
-  const [showCart, setShowCart] = useState(true);
-  const cartItems = useSelector(state => state.cartSlice.cartItems);
+  const cartItems = useSelector((state) => state.cartSlice.cartItems);
 
   const handleRemoveItem = (itemId) => {
     dispatch(removeFromCart(itemId));
@@ -28,16 +27,12 @@ export default function Cart({ onClose, cartItemsPropsNotUsedForNow, onRemoveIte
           <label
             className="close-cart-btn"
             onClick={() => {
-              setShowCart(false);
-              // if (cartItems) {
-              //   onClose(); // sends to parent component
-              // }
-              onClose(); // sends to parent component
+              onClose();
             }}
           >
             Close
           </label>
-          {!cartItems ? ( // cartItems.length === 0
+          {!cartItems ? (
             <p>Your cart is empty.</p>
           ) : (
             <>
@@ -45,12 +40,8 @@ export default function Cart({ onClose, cartItemsPropsNotUsedForNow, onRemoveIte
                 {cartItems.map((item) => (
                   <li key={item.id}>
                     <div className="item-info">
-                      <span className="item-name">
-                        {item.name}
-                      </span>
-                      <span className="item-price">
-                        ${item.price}
-                      </span>
+                      <span className="item-name">{item.name}</span>
+                      <span className="item-price">${item.price}</span>
                       <span className="item-quantity">
                         Quantity: {item.quantity}
                       </span>

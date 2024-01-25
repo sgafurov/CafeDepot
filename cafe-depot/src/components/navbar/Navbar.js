@@ -12,7 +12,13 @@ import Cart from "../shop/Cart";
 
 export default function Navbar() {
   let navigate = useNavigate();
+
   const [user, setUser] = useState(null);
+  const [showCart, setShowCart] = useState(false); // Move showCart state to Navbar
+
+  const toggleCart = () => {
+    setShowCart(!showCart);
+  };
 
   const handleLogout = async () => {
     try {
@@ -98,10 +104,13 @@ export default function Navbar() {
                 </Link>
               </li>
               <li className="nav-link">
-                <Link to="/cart">
+                <Link to="/cart" onClick={toggleCart}>
                   <img src={bagIcon} alt="Logo" className="logo" width={30} />
                 </Link>
               </li>
+              {/* Pass toggleCart function as a prop to Cart component */}
+              <Cart showCart={showCart} onClose={toggleCart} />
+
               {user && (
                 <li className="nav-link">
                   <img
