@@ -1,15 +1,23 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { removeFromCart } from "../../store/cartSlice";
+import { useSelector } from 'react-redux';
 import "../../styles/Cart.css";
 
-export default function Cart({ onClose, cartItems, onRemoveItem }) {
-  //   const handleCheckout=()=>{
-  //   }
+export default function Cart({ onClose, cartItemsPropsNotUsedForNow, onRemoveItem }) {
+  let dispatch = useDispatch()
+  let navigate = useNavigate();
+
   const [showCart, setShowCart] = useState(true);
+  const cartItems = useSelector(state => state.cartSlice.cartItems);
 
   const handleRemoveItem = (itemId) => {
-    if (onRemoveItem) {
-      onRemoveItem(itemId);
-    }
+    dispatch(removeFromCart(itemId));
+  };
+
+  const handleCheckout = () => {
+    navigate("/checkout");
   };
 
   return (
@@ -21,9 +29,10 @@ export default function Cart({ onClose, cartItems, onRemoveItem }) {
             className="close-cart-btn"
             onClick={() => {
               setShowCart(false);
-              if (cartItems) {
-                onClose(); // sends to parent component
-              }
+              // if (cartItems) {
+              //   onClose(); // sends to parent component
+              // }
+              onClose(); // sends to parent component
             }}
           >
             Close
@@ -36,15 +45,19 @@ export default function Cart({ onClose, cartItems, onRemoveItem }) {
                 {cartItems.map((item) => (
                   <li key={item.id}>
                     <div className="item-info">
-                      <span className="item-name">{item.product.name}</span>
-                      <span className="item-price">${item.product.price}</span>
+                      <span className="item-name">
+                        {item.name}
+                      </span>
+                      <span className="item-price">
+                        ${item.price}
+                      </span>
                       <span className="item-quantity">
                         Quantity: {item.quantity}
                       </span>
                     </div>
                     <button
                       className="remove-btn"
-                      onClick={() => handleRemoveItem(item.product.id)}
+                      onClick={() => handleRemoveItem(item.id)}
                     >
                       Remove
                     </button>
@@ -54,16 +67,16 @@ export default function Cart({ onClose, cartItems, onRemoveItem }) {
               <p className="total-price">
                 Total: $
                 {cartItems.reduce(
-                  (total, item) => total + item.product.price * item.quantity,
+                  (total, item) => total + item.price * item.quantity,
                   0
                 )}
               </p>
-              {cartItems.length>0 && (
+              {cartItems.length > 0 && (
                 <button
                   className="checkout-btn"
-                  // onClick={() => {
-                  //   handleCheckout();
-                  // }}
+                  onClick={() => {
+                    handleCheckout();
+                  }}
                 >
                   Checkout
                 </button>

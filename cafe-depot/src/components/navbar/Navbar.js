@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase";
 import "../../styles/Navbar.css";
+import Cart from "../shop/Cart";
 
 export default function Navbar() {
   let navigate = useNavigate();
@@ -42,22 +43,8 @@ export default function Navbar() {
         <ul className="nav-links">
           <li className="nav-link">
             <div className="dropdown">
-              <button className="dropbtn">Shop⌄</button>
+              <button className="dropbtn">Shop</button>
               <div className="dropdown-content">
-                {/* <p
-                  onClick={() => {
-                    goToLink("utensils");
-                  }}
-                >
-                  Utensils
-                </p>
-                <p
-                  onClick={() => {
-                    goToLink("cups");
-                  }}
-                >
-                  Cups
-                </p> */}
                 <Link to="/shop/utensils">Utensils</Link>
                 <Link to="/shop/cups">Cups</Link>
                 <Link to="/shop/plates">Plates</Link>

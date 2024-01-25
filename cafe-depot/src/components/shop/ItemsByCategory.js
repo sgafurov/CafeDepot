@@ -3,13 +3,16 @@ import { BASE_URL } from "../../constants";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebase";
 import { useParams } from "react-router-dom";
-import "../../styles/ItemsByCategory.css";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../store/cartSlice";
 import Cart from "./Cart";
+import "../../styles/ItemsByCategory.css";
 
 export default function ItemsByCategory() {
   const { category } = useParams();
+  const dispatch = useDispatch();
+
   const [quantities, setQuantities] = useState([]);
-  const [cartItems, setCartItems] = useState([]); // [ {product, quantity}, {p,q},... ]  PROP
   const [clickedAddToCart, setClickedAddToCart] = useState(false);
   const [renderedImages, setRenderedImages] = useState({});
   const [products, setProducts] = useState([
@@ -29,10 +32,7 @@ export default function ItemsByCategory() {
   }, [category, products]);
 
   useEffect(() => {
-    console.log("inside useEffect");
-    // get all products from db and add to products useState
     const fetchData = async () => {
-      console.log("inside fetchData");
       try {
         const response = await fetch(`${BASE_URL}/api/products/${category}`, {
           method: "GET",
@@ -95,42 +95,12 @@ export default function ItemsByCategory() {
 
   const handleAddToCart = (product, quantity) => {
     setClickedAddToCart(true);
-    const existingCartItemIndex = cartItems.findIndex(
-      (cartItem) => cartItem.product.id === product.id
-    );
-    if (existingCartItemIndex !== -1) {
-      // Update quantity if the item already exists
-      setCartItems((prevCartItems) => {
-        const updatedCartItems = [...prevCartItems];
-        console.log(
-          " updatedCartItems[existingCartItemIndex].quantity = ",
-          updatedCartItems[existingCartItemIndex].quantity
-        );
-        updatedCartItems[existingCartItemIndex].quantity = quantity;
-        return updatedCartItems;
-      });
-    } else {
-      // Add a new entry if the item does not exist
-      setCartItems((prevCartItems) => [
-        ...prevCartItems,
-        { product, quantity },
-      ]);
-    }
-
-    // setCartItems((prevCartItems) => [...prevCartItems, { product, quantity }]);
+    dispatch(addToCart({ product, quantity }));
   };
 
   // PROP
   const handleCartClose = () => {
     setClickedAddToCart(false);
-  };
-
-  // PROP
-  const handleRemoveItem = (itemId) => {
-    // Filter out the removed item from the cartItems state
-    setCartItems((prevCartItems) =>
-      prevCartItems.filter((item) => item.product.id !== itemId)
-    );
   };
 
   const increaseQuantity = (index) => {
@@ -151,15 +121,13 @@ export default function ItemsByCategory() {
     });
   };
 
-  // get all utensils from DB where category == utensils, and map out the utensils in boxes
-  // map through each utensil, create a li element with an onClick event that calls addToCart(utensil) passing it the current utensil
   return (
     <div className="products-list">
       {clickedAddToCart && (
         <Cart
           onClose={handleCartClose}
-          cartItems={cartItems}
-          onRemoveItem={handleRemoveItem}
+          // cartItems={cartItems}
+          // onRemoveItem={handleRemoveItem}
         />
       )}
       <ul className="utensils-list">
@@ -191,7 +159,6 @@ export default function ItemsByCategory() {
                   <button
                     className="add-to-cart"
                     onClick={() => {
-                      // handleAddToCart(products[index]);
                       handleAddToCart(products[index], quantities[index]);
                     }}
                   >

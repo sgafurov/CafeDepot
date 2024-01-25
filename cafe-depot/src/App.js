@@ -11,6 +11,7 @@ import Cart from "./components/shop/Cart";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
 import "./App.css";
+import Checkout from "./components/shop/Checkout";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -39,6 +40,7 @@ function App() {
           <Route exact path="/sign-up" element={<SignUp />} />
           <Route exact path="/log-in" element={<LogIn />} />
           <Route exact path="/cart" element={<Cart />} />
+          <Route exact path="/checkout" element={<Checkout />} />
           <Route
             exact
             path="/profile"
