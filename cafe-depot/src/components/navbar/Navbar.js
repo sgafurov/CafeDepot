@@ -104,12 +104,17 @@ export default function Navbar() {
                 </Link>
               </li>
               <li className="nav-link">
-                <Link to="/cart" onClick={toggleCart}>
+                <Link onClick={toggleCart}>
+                  {/* <Link to="/cart" onClick={toggleCart}> */}
                   <img src={bagIcon} alt="Logo" className="logo" width={30} />
                 </Link>
               </li>
               {/* Pass toggleCart function as a prop to Cart component */}
-              <Cart showCart={showCart} onClose={toggleCart} />
+              {showCart && (
+                <div className="cart-component">
+                  <Cart showCart={showCart} onClose={toggleCart} />
+                </div>
+              )}
 
               {user && (
                 <li className="nav-link">

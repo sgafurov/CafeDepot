@@ -39,7 +39,7 @@ function App() {
           <Route path="/shop/:category" element={<ItemsByCategory />} />
           <Route exact path="/sign-up" element={<SignUp />} />
           <Route exact path="/log-in" element={<LogIn />} />
-          <Route exact path="/cart" element={<Cart />} />
+          {/* <Route exact path="/cart" element={<Cart />} /> */}
           <Route exact path="/checkout" element={<Checkout />} />
           <Route
             exact
