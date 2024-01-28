@@ -1,8 +1,28 @@
 import { useSelector } from "react-redux";
+import { useEffect, useState } from "react";
 import "../../styles/Checkout.css";
 
 export default function Checkout() {
+  const firstName = useSelector((state) => state.userSlice.firstName);
+  const lastName = useSelector((state) => state.userSlice.lastName);
+  const email = useSelector((state) => state.userSlice.email);
+  const address = useSelector((state) => state.userSlice.address);
   const cartItems = useSelector((state) => state.cartSlice.cartItems);
+
+  const [formData, setFormData] = useState({
+    firstName: firstName,
+    lastName: lastName,
+    email: email,
+    address: address,
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  };
 
   return (
     <div className="checkout">
@@ -37,15 +57,39 @@ export default function Checkout() {
             </p>
           </div>
 
-          <form className="checkout-signup-form">
+          <form className="checkout-signup-form" onSubmit={handleSubmit}>
             <label>First name:</label>
-            <input type="text" name="firstName" required />
+            <input
+              type="text"
+              name="firstName"
+              defaultValue={firstName}
+              onChange={handleChange}
+              required
+            />
             <label>Last name:</label>
-            <input type="text" name="lastName" required />
+            <input
+              type="text"
+              name="lastName"
+              defaultValue={lastName}
+              onChange={handleChange}
+              required
+            />
             <label>Email:</label>
-            <input type="email" name="email" required />
+            <input
+              type="email"
+              name="email"
+              defaultValue={email}
+              onChange={handleChange}
+              required
+            />
             <label>Address:</label>
-            <input type="text" name="address" required />
+            <input
+              type="text"
+              name="address"
+              defaultValue={address}
+              onChange={handleChange}
+              required
+            />
             <button type="submit">Purchase</button>
           </form>
         </div>
