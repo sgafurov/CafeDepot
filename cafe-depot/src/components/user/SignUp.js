@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { BASE_URL } from "../../constants";
-import Loading from "../loading/Loading";
 import { auth } from "../../firebase";
 import { createUserWithEmailAndPassword } from "firebase/auth";
+import Loading from "../loading/Loading";
 import "../../styles/SignUp.css";
 
 export default function SignUp() {
   let navigate = useNavigate();
   const [formData, setFormData] = useState({
-    username: "",
-    password: "",
+    firstName: "",
+    lastName: "",
     email: "",
+    password: "",
     address: "",
   });
   const [loading, setLoading] = useState(false);
@@ -22,47 +23,41 @@ export default function SignUp() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // try {
-    //   setLoading(true);
-    //   const response = await fetch(`${BASE_URL}/api/users/sign-up`, {
-    //     method: "POST",
-    //     mode: "cors",
-    //     headers: {
-    //       "Content-Type": "application/json",
-    //     },
-    //     body: JSON.stringify(formData),
-    //   });
-    //   console.log("response ", response);
-    //   setLoading(false);
-    //   if (response.ok) {
-    //     const user = await response.json();
-    //     console.log("User created successfully:", user);
-    //     navigate("/log-in");
-    //   } else {
-    //     const errorData = await response.json();
-    //     throw errorData;
-    //   }
-    // } catch (error) {
-    //   console.error("Error creating user:", error.message);
-    //   alert("Error creating user: " + error.message);
-    // }
-
-    // FIREBASE AUTH
-    setLoading(true);
-    createUserWithEmailAndPassword(auth, formData.email, formData.password)
-      .then((userCredential) => {
-        // Signed up
-        setLoading(false);
-        const user = userCredential.user;
-        console.log("user signed up: ", user);
-        navigate("/log-in");
-      })
-      .catch((error) => {
-        setLoading(false);
-        const errorCode = error.code;
-        const errorMessage = error.message;
-        alert(errorMessage);
+    try {
+      setLoading(true);
+      const response = await fetch(`${BASE_URL}/api/users/sign-up`, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
       });
+      setLoading(false);
+      if (response.ok) {
+        // sign up in firebase
+        createUserWithEmailAndPassword(auth, formData.email, formData.password)
+          .then((userCredential) => {
+            // Signed up
+            const user = userCredential.user;
+            console.log("user signed up in firebase: ", user);
+          })
+          .catch((error) => {
+            // const errorMessage = error.message;
+            throw error;
+          });
+
+        const user = await response.json();
+        console.log("User created successfully in db: ", user);
+        navigate("/log-in");
+      } else {
+        const errorData = await response.json();
+        throw errorData;
+      }
+    } catch (error) {
+      console.error("Error creating user: ", error.message);
+      alert("Error creating user: " + error.message);
+    }
   };
 
   return (
@@ -71,8 +66,18 @@ export default function SignUp() {
         <Loading />
       ) : (
         <form className="signup-form" onSubmit={handleSubmit}>
-          <label>Username:</label>
-          <input type="text" name="username" onChange={handleChange} required />
+          <label>First name:</label>
+          <input
+            type="text"
+            name="firstName"
+            onChange={handleChange}
+            required
+          />
+          <label>Last name:</label>
+          <input type="text" name="lastName" onChange={handleChange} required />
+
+          <label>Email:</label>
+          <input type="email" name="email" onChange={handleChange} required />
 
           <label>Password:</label>
           <input
@@ -82,13 +87,9 @@ export default function SignUp() {
             required
           />
 
-          <label>Email:</label>
-          <input type="email" name="email" onChange={handleChange} required />
-
           <label>Address:</label>
           <input type="text" name="address" onChange={handleChange} required />
 
-          {/* <button type="submit">Sign Up</button> */}
           <button type="submit" disabled={loading}>
             {loading ? "Signing Up..." : "Sign Up"}
           </button>
