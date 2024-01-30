@@ -99,7 +99,13 @@ export default function ItemsByCategory() {
 
   const handleAddToCart = (product, quantity) => {
     setShowCart(true);
-    dispatch(addToCart({ product, quantity }));
+    if (quantity > product.stock) {
+      alert(
+        "Quantity requested exceeds stock. Choose less than " + product.stock
+      );
+    } else {
+      dispatch(addToCart({ product, quantity }));
+    }
   };
 
   const increaseQuantity = (index) => {

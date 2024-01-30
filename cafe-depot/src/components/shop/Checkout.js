@@ -1,13 +1,20 @@
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import "../../styles/Checkout.css";
+import { BASE_URL } from "../../constants";
+import { json } from "react-router-dom";
 
 export default function Checkout() {
+  const userId = useSelector((state) => state.userSlice.userId);
   const firstName = useSelector((state) => state.userSlice.firstName);
   const lastName = useSelector((state) => state.userSlice.lastName);
   const email = useSelector((state) => state.userSlice.email);
   const address = useSelector((state) => state.userSlice.address);
   const cartItems = useSelector((state) => state.cartSlice.cartItems);
+  const total = cartItems.reduce(
+    (total, item) => total + item.price * item.quantity,
+    0
+  );
 
   const [formData, setFormData] = useState({
     firstName: firstName,
@@ -20,8 +27,28 @@ export default function Checkout() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      const requestBody = {
+        userId: userId,
+        orderItems: cartItems,
+        total: total,
+      };
+      const response = await fetch(`${BASE_URL}/api/orders`, {
+        method: "POST",
+        mode: "cors",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+      if (response.ok) {
+        console.log(response);
+      }
+    } catch (error) {
+      alert("Error creating the Order");
+    }
   };
 
   return (
@@ -49,11 +76,12 @@ export default function Checkout() {
               ))}
             </ul>
             <p className="checkout-total-price">
-              Total: $
+              {/* Total: $
               {cartItems.reduce(
                 (total, item) => total + item.price * item.quantity,
                 0
-              )}
+              )} */}
+              Total: ${total}
             </p>
           </div>
 
