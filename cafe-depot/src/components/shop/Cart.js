@@ -10,6 +10,7 @@ export default function Cart({ showCart, onClose }) {
   let navigate = useNavigate();
 
   const cartItems = useSelector((state) => state.cartSlice.cartItems);
+  const isLoggedIn = useSelector((state) => state.userSlice.isLoggedIn);
 
   const handleRemoveItem = (itemId) => {
     dispatch(removeFromCart(itemId));

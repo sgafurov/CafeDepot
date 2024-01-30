@@ -21,6 +21,20 @@ function App() {
 
   const [user, setUser] = useState(null);
 
+  useEffect(() => {
+    onAuthStateChanged(auth, (firebaseUser) => {
+      if (firebaseUser) {
+        setUser(firebaseUser);
+        getUserData(firebaseUser.email);
+        console.log("firebaseUser is logged in: ", firebaseUser);
+      } else {
+        // User is signed out
+        console.log("firebaseUser is logged out");
+        setUser(null);
+      }
+    });
+  }, []);
+
   const getUserData = async (email) => {
     try {
       const response = await fetch(`${BASE_URL}/api/users/${email}`, {
@@ -42,20 +56,6 @@ function App() {
       console.error("Error fetching user from db in App.js: ", error.message);
     }
   };
-
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setUser(user);
-        getUserData(user.email);
-        console.log("user is logged in: ", user);
-      } else {
-        // User is signed out
-        console.log("user is logged out");
-        setUser(null);
-      }
-    });
-  }, []);
 
   return (
     <div className="App">

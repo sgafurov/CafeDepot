@@ -5,15 +5,20 @@ import profileIcon from "../../assets/icons/user.png";
 import logOutIcon from "../../assets/icons/log-out.png";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../../firebase";
-import "../../styles/Navbar.css";
+import { useDispatch, useSelector } from "react-redux";
+import { logOutUser } from "../../store/userSlice";
 import Cart from "../shop/Cart";
+import "../../styles/Navbar.css";
+
 
 export default function Navbar() {
   let navigate = useNavigate();
+  let dispatch = useDispatch();
 
-  const [user, setUser] = useState(null);
+  const isLoggedIn = useSelector((state) => state.userSlice.isLoggedIn);
+  const email = useSelector((state) => state.userSlice.email);
+
   const [showCart, setShowCart] = useState(false); // Move showCart state to Navbar
 
   const toggleCart = () => {
@@ -23,6 +28,7 @@ export default function Navbar() {
   const handleLogout = async () => {
     try {
       await auth.signOut();
+      dispatch(logOutUser());
       console.log("User logged out successfully");
       navigate("/");
     } catch (error) {
@@ -30,19 +36,6 @@ export default function Navbar() {
     }
   };
 
-  useEffect(() => {
-    onAuthStateChanged(auth, (user) => {
-      if (user) {
-        const uid = user.uid;
-        setUser(user);
-        console.log("user is logged in");
-      } else {
-        // User is signed out
-        console.log("user is logged out");
-        setUser(null);
-      }
-    });
-  }, []);
   return (
     <div className="outer-navbar">
       <div className="inner-navbar">
@@ -88,9 +81,9 @@ export default function Navbar() {
                 {/* if user is not logged in, display sign up page. if they are, display profile page (or admin page if they are dev) */}
                 <Link
                   to={
-                    !user
+                    !isLoggedIn
                       ? "/sign-up"
-                      : user && user.email === "dev@gmail.com"
+                      : isLoggedIn && email === "dev@gmail.com"
                       ? "/admin-profile"
                       : "/profile"
                   }
@@ -116,7 +109,7 @@ export default function Navbar() {
                 </div>
               )}
 
-              {user && (
+              {isLoggedIn && (
                 <li className="nav-link">
                   <img
                     src={logOutIcon}

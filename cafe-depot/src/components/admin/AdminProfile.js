@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
-import Loading from "../loading/Loading";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebase";
-import "../../styles/AdminProfile.css";
-
+import Loading from "../loading/Loading";
 import ImagesUpload from "./ImagesUpload";
+import "../../styles/AdminProfile.css";
 
 export default function AdminProfile() {
   const [loading, setLoading] = useState(false);
