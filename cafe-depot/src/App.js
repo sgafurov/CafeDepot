@@ -67,7 +67,11 @@ function App() {
           <Route exact path="/sign-up" element={<SignUp />} />
           <Route exact path="/log-in" element={<LogIn />} />
           {/* <Route exact path="/cart" element={<Cart />} /> */}
-          <Route exact path="/checkout" element={<Checkout />} />
+          <Route
+            exact
+            path="/checkout"
+            element={user ? <Checkout /> : <Landing />}
+          />
           <Route
             exact
             path="/profile"

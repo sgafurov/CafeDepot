@@ -63,14 +63,25 @@ export default function Cart({ showCart, onClose }) {
                   0
                 )}
               </p>
-              {cartItems.length > 0 && (
+              {isLoggedIn ? (
+                cartItems.length > 0 && (
+                  <button
+                    className="checkout-btn"
+                    onClick={() => {
+                      handleCheckout();
+                    }}
+                  >
+                    Checkout
+                  </button>
+                )
+              ) : (
                 <button
                   className="checkout-btn"
                   onClick={() => {
-                    handleCheckout();
+                    navigate("/sign-up");
                   }}
                 >
-                  Checkout
+                  Log in or sign up
                 </button>
               )}
             </>

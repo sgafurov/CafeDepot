@@ -11,7 +11,6 @@ import { logOutUser } from "../../store/userSlice";
 import Cart from "../shop/Cart";
 import "../../styles/Navbar.css";
 
-
 export default function Navbar() {
   let navigate = useNavigate();
   let dispatch = useDispatch();
@@ -34,6 +33,12 @@ export default function Navbar() {
     } catch (error) {
       console.error("Error logging out:", error.message);
     }
+  };
+
+  const handleInputSearch = (e) => {
+    e.preventDefault();
+    // get request to db
+    // find products with keywords matching product's title or desc
   };
 
   return (
@@ -72,6 +77,7 @@ export default function Navbar() {
                 type="text"
                 placeholder="Search for a product"
                 className="search-bar"
+                onSubmit={handleInputSearch}
               />
             </div>
           </li>
