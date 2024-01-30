@@ -1,10 +1,13 @@
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
-import "../../styles/Checkout.css";
 import { BASE_URL } from "../../constants";
 import { json } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import "../../styles/Checkout.css";
 
 export default function Checkout() {
+  let navigate = useNavigate();
+
   const userId = useSelector((state) => state.userSlice.userId);
   const firstName = useSelector((state) => state.userSlice.firstName);
   const lastName = useSelector((state) => state.userSlice.lastName);
@@ -45,6 +48,8 @@ export default function Checkout() {
       });
       if (response.ok) {
         console.log(response);
+        alert("Order placed");
+        navigate("/")
       }
     } catch (error) {
       alert("Error creating the Order");

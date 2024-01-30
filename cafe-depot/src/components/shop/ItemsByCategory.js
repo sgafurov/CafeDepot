@@ -84,7 +84,7 @@ export default function ItemsByCategory() {
         ...prevRenderedImages,
         [product.id]: urlArray.map((url, index) => (
           <div key={index}>
-            <img src={url} alt={`Image ${index}`} width={100} />
+            <img src={url} alt={`Image ${index}`} width={200} height={200} />
           </div>
         )),
       }));
@@ -147,7 +147,7 @@ export default function ItemsByCategory() {
                   )}
                   <div className="details-text">
                     <p className="title">{product.name}</p>
-                    <p className="price">{product.description}</p>
+                    <p className="price">{product.description.substring(0, 100)}...</p>
                     <p className="price">${product.price}</p>
                   </div>
                   <div className="quantity-controls">
