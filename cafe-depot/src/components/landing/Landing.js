@@ -24,7 +24,7 @@ export default function Landing() {
             <div
               style={{ cursor: "pointer" }}
               onClick={() => {
-                navigate(`/shop/${name.toLowerCase()}`);
+                navigate(`/shop/category/${name.toLowerCase()}`);
               }}
             >
               <p>{name}</p>

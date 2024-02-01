@@ -44,10 +44,14 @@ export default function Navbar() {
             <div className="dropdown">
               <button className="dropbtn">Shop</button>
               <div className="dropdown-content">
-                <Link to="/shop/utensils">Utensils</Link>
+                {/* <Link to="/shop/utensils">Utensils</Link>
                 <Link to="/shop/cups">Cups</Link>
                 <Link to="/shop/plates">Plates</Link>
-                <Link to="/shop/espresso-machines">Espresso Machines</Link>
+                <Link to="/shop/espresso-machines">Espresso Machines</Link> */}
+                <Link to="/shop/category/utensils">Utensils</Link>
+                <Link to="/shop/category/cups">Cups</Link>
+                <Link to="/shop/category/plates">Plates</Link>
+                <Link to="/shop/category/espresso-machines">Espresso Machines</Link>
               </div>
             </div>
           </li>

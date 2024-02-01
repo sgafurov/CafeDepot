@@ -14,6 +14,7 @@ import AdminProfile from "./components/admin/AdminProfile";
 import ItemsByCategory from "./components/shop/ItemsByCategory";
 import Cart from "./components/shop/Cart";
 import Checkout from "./components/shop/Checkout";
+import Products from "./components/shop/Products";
 import "./App.css";
 
 function App() {
@@ -63,7 +64,8 @@ function App() {
         <Navbar />
         <Routes>
           <Route exact path="/" element={<Landing />} />
-          <Route path="/shop/:category" element={<ItemsByCategory />} />
+          {/* <Route path="/shop/:category" element={<ItemsByCategory />} /> */}
+          <Route path="/shop/:searchType/:product" element={<Products />} />
           <Route exact path="/sign-up" element={<SignUp />} />
           <Route exact path="/log-in" element={<LogIn />} />
           {/* <Route exact path="/cart" element={<Cart />} /> */}
