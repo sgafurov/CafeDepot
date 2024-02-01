@@ -38,7 +38,7 @@ function App() {
   const getUserData = async (email) => {
     try {
       const response = await fetch(`${BASE_URL}/api/users/${email}`, {
-        method: "POST",
+        method: "GET",
         mode: "cors",
         headers: {
           "Content-Type": "application/json",

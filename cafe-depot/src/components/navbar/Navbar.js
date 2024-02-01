@@ -9,6 +9,7 @@ import { auth } from "../../firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { logOutUser } from "../../store/userSlice";
 import Cart from "../shop/Cart";
+import Search from "./Search";
 import "../../styles/Navbar.css";
 
 export default function Navbar() {
@@ -33,12 +34,6 @@ export default function Navbar() {
     } catch (error) {
       console.error("Error logging out:", error.message);
     }
-  };
-
-  const handleInputSearch = (e) => {
-    e.preventDefault();
-    // get request to db
-    // find products with keywords matching product's title or desc
   };
 
   return (
@@ -73,12 +68,13 @@ export default function Navbar() {
         <ul className="nav-links">
           <li className="nav-link">
             <div className="search-container">
-              <input
+              {/* <input
                 type="text"
                 placeholder="Search for a product"
                 className="search-bar"
                 onSubmit={handleInputSearch}
-              />
+              /> */}
+              <Search/>
             </div>
           </li>
           <li className="nav-link">

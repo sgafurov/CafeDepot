@@ -147,7 +147,7 @@ export default function AdminProfile() {
       const response = await fetch(
         `${BASE_URL}/api/products/delete/${productId}`,
         {
-          method: "POST",
+          method: "DELETE",
           mode: "cors",
           headers: {
             "Content-Type": "application/json",
