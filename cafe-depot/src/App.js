@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setUserInfo } from "./store/userSlice";
 import { BASE_URL } from "./constants";
 import Navbar from "./components/navbar/Navbar";
@@ -19,7 +19,7 @@ import "./App.css";
 
 function App() {
   let dispatch = useDispatch();
-
+  const email = useSelector((state) => state.userSlice.email);
   const [user, setUser] = useState(null);
 
   useEffect(() => {
@@ -82,7 +82,9 @@ function App() {
           <Route
             exact
             path="/admin-profile"
-            element={user ? <AdminProfile /> : <Landing />}
+            element={
+              user && email === "dev@gmail.com" ? <AdminProfile /> : <Landing />
+            }
           />
           {/* <Route path="/product/:productId" component={ProductDetails} /> */}
         </Routes>
