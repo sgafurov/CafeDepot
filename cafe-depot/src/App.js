@@ -11,7 +11,7 @@ import SignUp from "./components/user/SignUp";
 import LogIn from "./components/user/LogIn";
 import Profile from "./components/user/Profile";
 import AdminProfile from "./components/admin/AdminProfile";
-import ItemsByCategory from "./components/shop/ItemsByCategory";
+// import ItemsByCategory from "./components/shop/ItemsByCategory";
 import Cart from "./components/shop/Cart";
 import Checkout from "./components/shop/Checkout";
 import Products from "./components/shop/Products";

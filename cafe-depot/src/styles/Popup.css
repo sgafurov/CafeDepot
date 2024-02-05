@@ -1,0 +1,27 @@
+/* Add these styles to your CSS file or use a style object in your React component */
+
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 500px; /* Adjust the width and height based on your design */
+    height: auto;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    z-index: 999;
+  }
+  
+  .popup-content {
+    /* Add any additional styles for the popup content here */
+  }
+  
+  .close-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
+  }
+  

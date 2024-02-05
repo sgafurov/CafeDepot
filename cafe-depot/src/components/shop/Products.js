@@ -5,12 +5,16 @@ import { storage } from "../../firebase";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/cartSlice";
+import { useNavigate } from "react-router-dom";
 import Cart from "./Cart";
-import "../../styles/ItemsByCategory.css";
+import "../../styles/Products.css";
+
+import Popup from "./Popup";
 
 export default function Products() {
   const { searchType, product } = useParams();
   const dispatch = useDispatch();
+  let navigate = useNavigate();
 
   const [showCart, setShowCart] = useState(false);
   const [quantities, setQuantities] = useState([]);
@@ -131,15 +135,35 @@ export default function Products() {
     });
   };
 
+  const [isPopupOpen, setPopupOpen] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState();
+
+  const handleOpenPopup = (productId) => {
+    setSelectedProductId(productId);
+    setPopupOpen(!isPopupOpen);
+  };
+
   return (
     <div className="products-list">
       {showCart && <Cart onClose={toggleCart} showCart={showCart} />}
       <ul className="utensils-list">
         {products &&
           products.map((product, index) => (
-            <div key={index}>
+            <div
+              key={index}
+              onClick={() => {
+                handleOpenPopup(product.id);
+              }}
+            >
               <li className="utensil-item">
                 <div>
+                  <Popup
+                    isOpen={isPopupOpen}
+                    onClose={() => setPopupOpen(false)}
+                    productId={selectedProductId}
+                    renderedImages={renderedImages[selectedProductId]}
+                  ></Popup>
+
                   {renderedImages && renderedImages[product.id] && (
                     <div className="image-container">
                       <div className="first-image">
