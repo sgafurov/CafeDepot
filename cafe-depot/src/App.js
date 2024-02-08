@@ -66,8 +66,16 @@ function App() {
           <Route exact path="/" element={<Landing />} />
           {/* <Route path="/shop/:category" element={<ItemsByCategory />} /> */}
           <Route path="/shop/:searchType/:product" element={<Products />} />
-          <Route exact path="/sign-up" element={<SignUp />} />
-          <Route exact path="/log-in" element={<LogIn />} />
+          <Route
+            exact
+            path="/sign-up"
+            element={!user ? <SignUp /> : <Landing />}
+          />
+          <Route
+            exact
+            path="/log-in"
+            element={!user ? <LogIn /> : <Landing />}
+          />
           {/* <Route exact path="/cart" element={<Cart />} /> */}
           <Route
             exact

@@ -3,15 +3,18 @@ import { useDispatch, useSelector } from "react-redux";
 import { BASE_URL } from "../../constants";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebase";
+import Loading from "../loading/Loading";
 
 export default function Profile() {
   const userId = useSelector((state) => state.userSlice.userId);
 
+  const [loading, setLoading] = useState(false);
   const [orders, setOrders] = useState([{}]);
   const [renderedImages, setRenderedImages] = useState({});
 
   const getOrdersByUserId = async () => {
     try {
+      setLoading(true);
       const response = await fetch(`${BASE_URL}/api/orders/${userId}`, {
         method: "GET",
         mode: "cors",
@@ -19,6 +22,7 @@ export default function Profile() {
           "Content-Type": "application/json",
         },
       });
+      setLoading(false);
       if (response.ok) {
         const orders = await response.json();
         console.log("Orders fetched successfully: ", orders);
@@ -67,46 +71,51 @@ export default function Profile() {
   useEffect(() => {
     // Fetch image URLs when the component mounts or when products change
     orders.forEach((order) => {
-      order.orderItems && order.orderItems.forEach((orderItem) => {
-        fetchImageUrls(orderItem.product);
-      });
+      order.orderItems &&
+        order.orderItems.forEach((orderItem) => {
+          fetchImageUrls(orderItem.product);
+        });
     });
   }, [orders]);
 
   return (
     <div>
       My orders
-      <div className="product-container">
-        {orders &&
-          orders.map((order, index) => (
-            <div key={index}>
-              <table className="product-table">
-                <tbody>
-                  <tr>
-                    <td>Total:</td>
-                    <td>${order.total}</td>
-                  </tr>
-                  <tr>
-                    <td>Date placed:</td>
-                    <td>{order.orderDate}</td>
-                  </tr>
-                  <tr>
-                    <td>Order items:</td>
+      {loading ? (
+        <Loading />
+      ) : (
+        <div className="product-container">
+          {orders &&
+            orders.map((order, index) => (
+              <div key={index}>
+                <table className="product-table">
+                  <tbody>
                     <tr>
-                      {order.orderItems &&
-                        order.orderItems.map((orderItem, index) => (
-                          <tr>
-                            <td>{orderItem.product.name}</td>
-                            {renderedImages[orderItem.product.id]}
-                          </tr>
-                        ))}
+                      <td>Total:</td>
+                      <td>${order.total}</td>
                     </tr>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          ))}
-      </div>
+                    <tr>
+                      <td>Date placed:</td>
+                      <td>{order.orderDate}</td>
+                    </tr>
+                    <tr>
+                      <td>Order items:</td>
+                      <tr>
+                        {order.orderItems &&
+                          order.orderItems.map((orderItem, index) => (
+                            <tr>
+                              <td>{orderItem.product.name}</td>
+                              {renderedImages[orderItem.product.id]}
+                            </tr>
+                          ))}
+                      </tr>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            ))}
+        </div>
+      )}
     </div>
   );
 }

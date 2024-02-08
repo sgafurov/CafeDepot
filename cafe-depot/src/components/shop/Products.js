@@ -7,11 +7,14 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/cartSlice";
 import Cart from "./Cart";
 import Popup from "./Popup";
+import Loading from "../loading/Loading";
 import "../../styles/Products.css";
 
 export default function Products() {
   const { searchType, product } = useParams();
   const dispatch = useDispatch();
+
+  const [loading, setLoading] = useState(false);
   const [showCart, setShowCart] = useState(false);
   const [quantities, setQuantities] = useState([]); // set in an array with index corresponding to the product state
   const [renderedImages, setRenderedImages] = useState({});
@@ -41,6 +44,7 @@ export default function Products() {
 
   const fetchData = async () => {
     try {
+      setLoading(true);
       const response = await fetch(
         searchType === "category"
           ? `${BASE_URL}/api/products/category/${product}`
@@ -53,6 +57,7 @@ export default function Products() {
           },
         }
       );
+      setLoading(false);
       if (response.ok) {
         const products = await response.json();
         console.log("Products fetched successfully:", products);
@@ -92,7 +97,12 @@ export default function Products() {
       setRenderedImages((prevRenderedImages) => ({
         ...prevRenderedImages,
         [product.id]: urlArray.map((url, index) => (
-          <img src={url} alt={`Image ${index}`} key={index} className="product-img"/>
+          <img
+            src={url}
+            alt={`Image ${index}`}
+            key={index}
+            className="product-img"
+          />
         )),
       }));
     } catch (error) {
@@ -142,74 +152,78 @@ export default function Products() {
   return (
     <div>
       {showCart && <Cart onClose={toggleCart} showCart={showCart} />}
-      <ul className="products-ul">
-        {products &&
-          products.map((product, index) => (
-            <div key={index}>
-              <li className="product-li">
-                <div className="product-container">
-                  <div
-                    className="product-info"
-                    onClick={() => {
-                      handleProductClick(product.id, index);
-                    }}
-                  >
-                    {isPopupOpen && (
-                      <Popup
-                        isOpen={isPopupOpen}
-                        onClose={() => setPopupOpen(!isPopupOpen)}
-                        productId={selectedProductId}
-                        renderedImages={renderedImages[selectedProductId]}
-                        quantities={quantities}
-                        setQuantities={setQuantities}
-                        index={popupIndex}
-                        increaseQuantity={increaseQuantity}
-                        decreaseQuantity={decreaseQuantity}
-                        handleAddToCart={handleAddToCart}
-                        key={selectedProductId}
-                      ></Popup>
-                    )}
+      {loading ? (
+        <Loading />
+      ) : (
+        <ul className="products-ul">
+          {products &&
+            products.map((product, index) => (
+              <div key={index}>
+                <li className="product-li">
+                  <div className="product-container">
+                    <div
+                      className="product-info"
+                      onClick={() => {
+                        handleProductClick(product.id, index);
+                      }}
+                    >
+                      {isPopupOpen && (
+                        <Popup
+                          isOpen={isPopupOpen}
+                          onClose={() => setPopupOpen(!isPopupOpen)}
+                          productId={selectedProductId}
+                          renderedImages={renderedImages[selectedProductId]}
+                          quantities={quantities}
+                          setQuantities={setQuantities}
+                          index={popupIndex}
+                          increaseQuantity={increaseQuantity}
+                          decreaseQuantity={decreaseQuantity}
+                          handleAddToCart={handleAddToCart}
+                          key={selectedProductId}
+                        ></Popup>
+                      )}
 
-                    {renderedImages && renderedImages[product.id] && (
-                      <div className="product-images-container">
-                        <div className="first-image">
-                          <div className="image-div" key={index}>
-                            {renderedImages[product.id][0]}
+                      {renderedImages && renderedImages[product.id] && (
+                        <div className="product-images-container">
+                          <div className="first-image">
+                            <div className="image-div" key={index}>
+                              {renderedImages[product.id][0]}
+                            </div>
+                          </div>
+                          <div className="second-image">
+                            <div className="image-div" key={index}>
+                              {renderedImages[product.id][1]}
+                            </div>
                           </div>
                         </div>
-                        <div className="second-image">
-                          <div className="image-div" key={index}>
-                            {renderedImages[product.id][1]}
-                          </div>
-                        </div>
+                      )}
+                      <div className="product-details">
+                        <p className="title">{product.name}</p>
+                        <p className="price">
+                          {product.description.substring(0, 100)}...
+                        </p>
+                        <p className="price">${product.price}</p>
                       </div>
-                    )}
-                    <div className="product-details">
-                      <p className="title">{product.name}</p>
-                      <p className="price">
-                        {product.description.substring(0, 100)}...
-                      </p>
-                      <p className="price">${product.price}</p>
                     </div>
+                    <div className="quantity-controls">
+                      <button onClick={() => decreaseQuantity(index)}>-</button>
+                      <p>{quantities[index]}</p>
+                      <button onClick={() => increaseQuantity(index)}>+</button>
+                    </div>
+                    <button
+                      className="add-to-cart"
+                      onClick={() => {
+                        handleAddToCart(products[index], quantities[index]);
+                      }}
+                    >
+                      Add to Cart
+                    </button>
                   </div>
-                  <div className="quantity-controls">
-                    <button onClick={() => decreaseQuantity(index)}>-</button>
-                    <p>{quantities[index]}</p>
-                    <button onClick={() => increaseQuantity(index)}>+</button>
-                  </div>
-                  <button
-                    className="add-to-cart"
-                    onClick={() => {
-                      handleAddToCart(products[index], quantities[index]);
-                    }}
-                  >
-                    Add to Cart
-                  </button>
-                </div>
-              </li>
-            </div>
-          ))}
-      </ul>
+                </li>
+              </div>
+            ))}
+        </ul>
+      )}
     </div>
   );
 }

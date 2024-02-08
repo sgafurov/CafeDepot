@@ -35,6 +35,7 @@ export default function AdminProfile() {
     const fetchData = async () => {
       console.log("inside fetchData");
       try {
+        setLoading(true);
         const response = await fetch(`${BASE_URL}/api/products/all`, {
           method: "GET",
           mode: "cors",
@@ -42,7 +43,7 @@ export default function AdminProfile() {
             "Content-Type": "application/json",
           },
         });
-        console.log("response ", response);
+        setLoading(false);
         if (response.ok) {
           const products = await response.json();
           console.log("Products fetched successfully:", products);
@@ -60,7 +61,6 @@ export default function AdminProfile() {
   }, []);
 
   const handleChange = (e) => {
-    console.log("item handleChange: " + item.category);
     setItem({ ...item, [e.target.name]: e.target.value });
   };
 
@@ -77,7 +77,6 @@ export default function AdminProfile() {
         },
         body: JSON.stringify(item),
       });
-      console.log("response ", response);
       setLoading(false);
       if (response.ok) {
         const product = await response.json();
@@ -119,14 +118,6 @@ export default function AdminProfile() {
         let downloadUrl = await getDownloadURL(imageRef);
         urlArray.push(downloadUrl);
       }
-
-      // setRenderedImages(
-      //   urlArray.map((url, index) => (
-      //     <div key={index}>
-      //       <img src={url} alt={`Image ${index}`} width={100} />
-      //     </div>
-      //   ))
-      // );
 
       setRenderedImages((prevRenderedImages) => ({
         ...prevRenderedImages,
@@ -228,7 +219,10 @@ export default function AdminProfile() {
       )}
       <h3>Current Stock</h3>
       <div className="product-container">
-        {products &&
+        {loading ? (
+          <Loading />
+        ) : (
+          // {products &&
           products.map((product, index) => (
             <div key={index}>
               <table className="product-table">
@@ -255,16 +249,6 @@ export default function AdminProfile() {
                   </tr>
                   <tr>
                     <td>Images:</td>
-                    {/* {product.imageNames &&
-                      product.imageNames.split("+").map((imageName) => (
-                        <>
-                          <td>{imageName}</td>
-                          <img src={imageName} />
-                        </>
-                      ))} */}
-                    {/* {product.imageNames &&
-                      renderProductImages(product.imageNames)} */}
-                    {/* {product.imageNames && renderProductImages(product.imageNames)} */}
                     <div style={{ display: "flex" }}>
                       {renderedImages[product.id]}
                     </div>
@@ -279,7 +263,9 @@ export default function AdminProfile() {
                 </tbody>
               </table>
             </div>
-          ))}
+          ))
+          // }
+        )}
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
+import Loading from "../loading/Loading";
 import "../../styles/Popup.css";
 
 const Popup = ({
@@ -15,6 +16,7 @@ const Popup = ({
   children,
 }) => {
   const [product, setProduct] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     if (productId) {
@@ -24,6 +26,7 @@ const Popup = ({
 
   const fetchData = async () => {
     try {
+      setLoading(true);
       const response = await fetch(`${BASE_URL}/api/products/${productId}`, {
         method: "GET",
         mode: "cors",
@@ -31,6 +34,7 @@ const Popup = ({
           "Content-Type": "application/json",
         },
       });
+      setLoading(false);
       if (response.ok) {
         const product = await response.json();
         console.log("specific product fetched successfully:", product);
@@ -61,58 +65,61 @@ const Popup = ({
 
   return (
     isOpen && (
-      <div className="popup">
-        <div className="popup-content" onClick={handleContainerClick}>
-          <button className="close-btn" onClick={onClose}>
-            Close
-          </button>
-          {product ? (
-            <div className="product-data">
-              <div className="product-images">
-                {/* <div className="first-image">{renderedImages[0]}</div>
-                <div className="second-image">{renderedImages[1]}</div> */}
-                {renderedImages[0]}
-                {renderedImages[1]}
-              </div>
+      <div className="popup" onClick={handleContainerClick}>
+        <button className="close-btn" onClick={onClose}>
+          Close
+        </button>
 
-              <div className="product-details-div">
-                <div className="product-info">
-                  <h2>{product.name}</h2>
-                  <p>{product.description}</p>
-                  <p>${product.price}</p>
+        {loading ? (
+          <Loading />
+        ) : (
+          <div>
+            {product && (
+              <div className="product-data">
+                <div className="product-images">
+                  {/* <div className="first-image">{renderedImages[0]}</div>
+                <div className="second-image">{renderedImages[1]}</div> */}
+                  {renderedImages[0]}
+                  {renderedImages[1]}
                 </div>
-                <div className="quantity-controls">
+
+                <div className="product-details-div">
+                  <div className="product-info">
+                    <h2>{product.name}</h2>
+                    <p>{product.description}</p>
+                    <p>${product.price}</p>
+                  </div>
+                  <div className="quantity-controls">
+                    <button
+                      onClick={() => {
+                        handleDecreaseQuantity();
+                      }}
+                    >
+                      -
+                    </button>
+                    <p>{quantities[index]}</p>
+                    <button
+                      onClick={() => {
+                        hanldeIncreaseQuantity();
+                      }}
+                    >
+                      +
+                    </button>
+                  </div>
                   <button
+                    className="add-to-cart"
                     onClick={() => {
-                      handleDecreaseQuantity();
+                      handleAddToCart(product, quantities[index]);
+                      onClose();
                     }}
                   >
-                    -
-                  </button>
-                  <p>{quantities[index]}</p>
-                  <button
-                    onClick={() => {
-                      hanldeIncreaseQuantity();
-                    }}
-                  >
-                    +
+                    Add to Cart
                   </button>
                 </div>
-                <button
-                  className="add-to-cart"
-                  onClick={() => {
-                    handleAddToCart(product, quantities[index]);
-                    onClose();
-                  }}
-                >
-                  Add to Cart
-                </button>
               </div>
-            </div>
-          ) : (
-            <p>Loading...</p>
-          )}
-        </div>
+            )}
+          </div>
+        )}
       </div>
     )
   );

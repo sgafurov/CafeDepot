@@ -1,2 +1,3 @@
-export const BASE_URL = "http://localhost:8080"
-//"https://cafe-depot-backend.onrender.com"
+export const BASE_URL =
+  // "https://cafe-depot-backend.onrender.com"
+  "http://localhost:8080";
