@@ -1,20 +1,24 @@
-.utensils-list {
+.products-ul {
     display: flex;
     flex-direction: row;
 }
 
-.utensil-item {
+.product-li {
     list-style: none;
     display: block;
     min-width: 200px;
 }
 
-.utensil-item-container {
+.product-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
     padding: 10px;
+}
+
+.product-info {
+    cursor: pointer;
 }
 
 .quantity-controls {
@@ -51,11 +55,11 @@
     margin: 0 10px;
 }
 
-.details-text {
+.product-details {
     padding: 10px;
 }
 
-.details-text>p {
+.product-details>p {
     margin: 10px auto;
     text-align: left;
     align-self: flex-start;
@@ -72,18 +76,7 @@
     font-weight: 500;
 }
 
-.add-to-cart {
-    padding: 12px;
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    cursor: pointer;
-    height: min-content;
-    border-radius: 5px;
-    min-width: 100px;
-}
-
-.image-container {
+.product-images-container {
     position: relative;
 }
 
@@ -92,7 +85,7 @@
     height: 200px;
 }
 
-.image-div>img {
+.product-img {
     width: 100%;
 }
 
@@ -105,16 +98,23 @@
     transition: visibility 0s, opacity 0.5s ease-in-out;
 }
 
-.image-container:hover .second-image {
+.product-images-container:hover .second-image {
     visibility: visible;
     opacity: 1;
 }
 
-.image-container:hover .first-image {
+.product-images-container:hover .first-image {
     visibility: visible;
     opacity: 0;
 }
 
-.product-desc {
+.add-to-cart {
+    padding: 12px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
     cursor: pointer;
+    height: min-content;
+    border-radius: 5px;
+    min-width: 100px;
 }

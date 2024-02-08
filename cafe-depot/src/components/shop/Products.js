@@ -92,10 +92,7 @@ export default function Products() {
       setRenderedImages((prevRenderedImages) => ({
         ...prevRenderedImages,
         [product.id]: urlArray.map((url, index) => (
-          <div className="image-div" key={index}>
-            <img src={url} alt={`Image ${index}`} />
-            {/* width={200} height={200}  */}
-          </div>
+          <img src={url} alt={`Image ${index}`} key={index} className="product-img"/>
         )),
       }));
     } catch (error) {
@@ -143,18 +140,18 @@ export default function Products() {
   };
 
   return (
-    <div className="products-list">
+    <div>
       {showCart && <Cart onClose={toggleCart} showCart={showCart} />}
-      <ul className="utensils-list">
+      <ul className="products-ul">
         {products &&
           products.map((product, index) => (
             <div key={index}>
-              <li className="utensil-item">
-                <div className="utensil-item-container">
+              <li className="product-li">
+                <div className="product-container">
                   <div
-                    className="product-desc"
+                    className="product-info"
                     onClick={() => {
-                      handleProductClick(product.id, index)
+                      handleProductClick(product.id, index);
                     }}
                   >
                     {isPopupOpen && (
@@ -174,16 +171,20 @@ export default function Products() {
                     )}
 
                     {renderedImages && renderedImages[product.id] && (
-                      <div className="image-container">
+                      <div className="product-images-container">
                         <div className="first-image">
-                          {renderedImages[product.id][0]}
+                          <div className="image-div" key={index}>
+                            {renderedImages[product.id][0]}
+                          </div>
                         </div>
                         <div className="second-image">
-                          {renderedImages[product.id][1]}
+                          <div className="image-div" key={index}>
+                            {renderedImages[product.id][1]}
+                          </div>
                         </div>
                       </div>
                     )}
-                    <div className="details-text">
+                    <div className="product-details">
                       <p className="title">{product.name}</p>
                       <p className="price">
                         {product.description.substring(0, 100)}...

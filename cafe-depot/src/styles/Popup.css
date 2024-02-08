@@ -46,24 +46,38 @@
     cursor: pointer;
 }
 
-.product-info {
-    width: 60%;
-}
-
 .popup .image-div {
-    width: 400px;
-    height: 400px;
+    width: 350px;
+    height: auto;
 }
 
-.image-div>img {
+.product-images>img {
     width: 100%;
 }
 
 .product-images {
-    position: relative;
+    /* position: relative; */
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    width: 400px;
+    /* Set maximum height to fit within the popup */
+    height: 450px;
+    /* Adjust this value as needed */
+    overflow-y: auto;
+    /* Enable vertical scrollbar if content exceeds container height */
+}
+
+
+.first-image {
+    visibility: visible;
 }
 
 .second-image {
+    visibility: visible;
+}
+
+/* .second-image {
     position: absolute;
     top: 0;
     left: 0;
@@ -80,4 +94,4 @@
 .product-images:hover .first-image {
     visibility: visible;
     opacity: 0;
-}
+} */

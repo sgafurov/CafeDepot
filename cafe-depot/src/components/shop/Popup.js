@@ -69,8 +69,10 @@ const Popup = ({
           {product ? (
             <div className="product-data">
               <div className="product-images">
-                <div className="first-image">{renderedImages[0]}</div>
-                <div className="second-image">{renderedImages[1]}</div>
+                {/* <div className="first-image">{renderedImages[0]}</div>
+                <div className="second-image">{renderedImages[1]}</div> */}
+                {renderedImages[0]}
+                {renderedImages[1]}
               </div>
 
               <div className="product-details-div">
