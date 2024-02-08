@@ -1,10 +1,26 @@
-// Popup.js
 import React, { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
 import "../../styles/Popup.css";
 
-const Popup = ({ isOpen, onClose, productId, renderedImages, children }) => {
+const Popup = ({
+  isOpen,
+  onClose,
+  productId,
+  renderedImages,
+  quantities,
+  index,
+  increaseQuantity,
+  decreaseQuantity,
+  handleAddToCart,
+  children,
+}) => {
   const [product, setProduct] = useState(null);
+
+  useEffect(() => {
+    if (productId) {
+      fetchData();
+    }
+  }, []);
 
   const fetchData = async () => {
     try {
@@ -29,30 +45,68 @@ const Popup = ({ isOpen, onClose, productId, renderedImages, children }) => {
     }
   };
 
-  useEffect(() => {
-    if (productId) {
-      fetchData();
-    }
-  }, [productId]);
+  const hanldeIncreaseQuantity = () => {
+    increaseQuantity(index);
+  };
+
+  const handleDecreaseQuantity = () => {
+    decreaseQuantity(index);
+  };
+
+  const handleContainerClick = (event) => {
+    // Prevent event propagation to parent elements
+    // ensure that clicking inside the Popup component doesn't trigger the onClose function
+    event.stopPropagation();
+  };
 
   return (
     isOpen && (
       <div className="popup">
-        <div className="popup-content">
+        <div className="popup-content" onClick={handleContainerClick}>
           <button className="close-btn" onClick={onClose}>
             Close
           </button>
-          {/* content that is placed between the opening and closing tags  */}
-          {/* {children} */}
           {product ? (
-            <>
-              <h2>{product.name}</h2>
-              <p>{product.description}</p>
-              <div>
-                <div>{renderedImages[0]}</div>
-                <div>{renderedImages[1]}</div>
+            <div className="product-data">
+              <div className="product-images">
+                <div className="first-image">{renderedImages[0]}</div>
+                <div className="second-image">{renderedImages[1]}</div>
               </div>
-            </>
+
+              <div className="product-details-div">
+                <div className="product-info">
+                  <h2>{product.name}</h2>
+                  <p>{product.description}</p>
+                  <p>${product.price}</p>
+                </div>
+                <div className="quantity-controls">
+                  <button
+                    onClick={() => {
+                      handleDecreaseQuantity();
+                    }}
+                  >
+                    -
+                  </button>
+                  <p>{quantities[index]}</p>
+                  <button
+                    onClick={() => {
+                      hanldeIncreaseQuantity();
+                    }}
+                  >
+                    +
+                  </button>
+                </div>
+                <button
+                  className="add-to-cart"
+                  onClick={() => {
+                    handleAddToCart(product, quantities[index]);
+                    onClose();
+                  }}
+                >
+                  Add to Cart
+                </button>
+              </div>
+            </div>
           ) : (
             <p>Loading...</p>
           )}

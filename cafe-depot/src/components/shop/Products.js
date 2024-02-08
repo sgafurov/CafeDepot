@@ -5,19 +5,15 @@ import { storage } from "../../firebase";
 import { useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../store/cartSlice";
-import { useNavigate } from "react-router-dom";
 import Cart from "./Cart";
-import "../../styles/Products.css";
-
 import Popup from "./Popup";
+import "../../styles/Products.css";
 
 export default function Products() {
   const { searchType, product } = useParams();
   const dispatch = useDispatch();
-  let navigate = useNavigate();
-
   const [showCart, setShowCart] = useState(false);
-  const [quantities, setQuantities] = useState([]);
+  const [quantities, setQuantities] = useState([]); // set in an array with index corresponding to the product state
   const [renderedImages, setRenderedImages] = useState({});
   const [products, setProducts] = useState([
     {
@@ -29,6 +25,19 @@ export default function Products() {
       imageNames: "",
     },
   ]);
+  // these states are for the popup component
+  const [isPopupOpen, setPopupOpen] = useState(false);
+  const [selectedProductId, setSelectedProductId] = useState();
+  const [popupIndex, setPopupIndex] = useState(false);
+
+  useEffect(() => {
+    // Initialize quantities array with default quantity (1) for each product
+    setQuantities(new Array(products.length).fill(1));
+  }, [products]);
+
+  useEffect(() => {
+    fetchData();
+  }, [searchType, product]);
 
   const fetchData = async () => {
     try {
@@ -58,15 +67,6 @@ export default function Products() {
     }
   };
 
-  useEffect(() => {
-    // Initialize quantities array with default quantity (1) for each product
-    setQuantities(new Array(products.length).fill(1));
-  }, [products]); //searchType
-
-  useEffect(() => {
-    fetchData();
-  }, [searchType, product]);
-
   // avoid the "Objects are not valid as a React child" issue.
   useEffect(() => {
     // Fetch image URLs when the component mounts or when products change
@@ -75,7 +75,7 @@ export default function Products() {
         fetchImageUrls(product);
       }
     });
-  }, [products]); //searchType
+  }, [products]);
 
   const fetchImageUrls = async (product) => {
     try {
@@ -92,28 +92,14 @@ export default function Products() {
       setRenderedImages((prevRenderedImages) => ({
         ...prevRenderedImages,
         [product.id]: urlArray.map((url, index) => (
-          <div key={index}>
-            <img src={url} alt={`Image ${index}`} width={200} height={200} />
+          <div className="image-div" key={index}>
+            <img src={url} alt={`Image ${index}`} />
+            {/* width={200} height={200}  */}
           </div>
         )),
       }));
     } catch (error) {
       console.log("Error getting image URL:", error);
-    }
-  };
-
-  const toggleCart = () => {
-    setShowCart(!showCart);
-  };
-
-  const handleAddToCart = (product, quantity) => {
-    setShowCart(true);
-    if (quantity > product.stock) {
-      alert(
-        "Quantity requested exceeds stock. Choose less than " + product.stock
-      );
-    } else {
-      dispatch(addToCart({ product, quantity }));
     }
   };
 
@@ -135,12 +121,25 @@ export default function Products() {
     });
   };
 
-  const [isPopupOpen, setPopupOpen] = useState(false);
-  const [selectedProductId, setSelectedProductId] = useState();
+  const toggleCart = () => {
+    setShowCart(!showCart);
+  };
 
-  const handleOpenPopup = (productId) => {
+  const handleAddToCart = (product, quantity) => {
+    setShowCart(true);
+    if (quantity > product.stock) {
+      alert(
+        "Quantity requested exceeds stock. Choose less than " + product.stock
+      );
+    } else {
+      dispatch(addToCart({ product, quantity }));
+    }
+  };
+
+  const handleProductClick = (productId, index) => {
     setSelectedProductId(productId);
     setPopupOpen(!isPopupOpen);
+    setPopupIndex(index); // Store the index of the clicked product
   };
 
   return (
@@ -149,37 +148,48 @@ export default function Products() {
       <ul className="utensils-list">
         {products &&
           products.map((product, index) => (
-            <div
-              key={index}
-              onClick={() => {
-                handleOpenPopup(product.id);
-              }}
-            >
+            <div key={index}>
               <li className="utensil-item">
-                <div>
-                  <Popup
-                    isOpen={isPopupOpen}
-                    onClose={() => setPopupOpen(false)}
-                    productId={selectedProductId}
-                    renderedImages={renderedImages[selectedProductId]}
-                  ></Popup>
+                <div className="utensil-item-container">
+                  <div
+                    className="product-desc"
+                    onClick={() => {
+                      handleProductClick(product.id, index)
+                    }}
+                  >
+                    {isPopupOpen && (
+                      <Popup
+                        isOpen={isPopupOpen}
+                        onClose={() => setPopupOpen(!isPopupOpen)}
+                        productId={selectedProductId}
+                        renderedImages={renderedImages[selectedProductId]}
+                        quantities={quantities}
+                        setQuantities={setQuantities}
+                        index={popupIndex}
+                        increaseQuantity={increaseQuantity}
+                        decreaseQuantity={decreaseQuantity}
+                        handleAddToCart={handleAddToCart}
+                        key={selectedProductId}
+                      ></Popup>
+                    )}
 
-                  {renderedImages && renderedImages[product.id] && (
-                    <div className="image-container">
-                      <div className="first-image">
-                        {renderedImages[product.id][0]}
+                    {renderedImages && renderedImages[product.id] && (
+                      <div className="image-container">
+                        <div className="first-image">
+                          {renderedImages[product.id][0]}
+                        </div>
+                        <div className="second-image">
+                          {renderedImages[product.id][1]}
+                        </div>
                       </div>
-                      <div className="second-image">
-                        {renderedImages[product.id][1]}
-                      </div>
+                    )}
+                    <div className="details-text">
+                      <p className="title">{product.name}</p>
+                      <p className="price">
+                        {product.description.substring(0, 100)}...
+                      </p>
+                      <p className="price">${product.price}</p>
                     </div>
-                  )}
-                  <div className="details-text">
-                    <p className="title">{product.name}</p>
-                    <p className="price">
-                      {product.description.substring(0, 100)}...
-                    </p>
-                    <p className="price">${product.price}</p>
                   </div>
                   <div className="quantity-controls">
                     <button onClick={() => decreaseQuantity(index)}>-</button>

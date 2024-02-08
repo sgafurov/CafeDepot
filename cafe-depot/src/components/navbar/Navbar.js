@@ -44,22 +44,23 @@ export default function Navbar() {
             <div className="dropdown">
               <button className="dropbtn">Shop</button>
               <div className="dropdown-content">
-                {/* <Link to="/shop/utensils">Utensils</Link>
-                <Link to="/shop/cups">Cups</Link>
-                <Link to="/shop/plates">Plates</Link>
-                <Link to="/shop/espresso-machines">Espresso Machines</Link> */}
                 <Link to="/shop/category/utensils">Utensils</Link>
                 <Link to="/shop/category/cups">Cups</Link>
                 <Link to="/shop/category/plates">Plates</Link>
-                <Link to="/shop/category/espresso-machines">Espresso Machines</Link>
+                <Link to="/shop/category/espresso-machines">
+                  Espresso Machines
+                </Link>
               </div>
             </div>
           </li>
-          <li className="nav-link">
+          {/* <li className="nav-link">
             <a href="">Trending</a>
+          </li> */}
+          <li className="nav-link">
+            <a href="">About Us</a>
           </li>
           <li className="nav-link">
-            <a href="">Brands</a>
+            <a href="">Contact</a>
           </li>
         </ul>
 
@@ -78,7 +79,7 @@ export default function Navbar() {
                 className="search-bar"
                 onSubmit={handleInputSearch}
               /> */}
-              <Search/>
+              <Search />
             </div>
           </li>
           <li className="nav-link">
