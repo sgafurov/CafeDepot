@@ -2,11 +2,14 @@ import { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebase";
+import { useNavigate } from "react-router-dom";
 import Loading from "../loading/Loading";
 import ImagesUpload from "./ImagesUpload";
 import "../../styles/AdminProfile.css";
 
 export default function AdminProfile() {
+  let navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
   const [item, setItem] = useState({
     name: "",
@@ -161,6 +164,7 @@ export default function AdminProfile() {
 
   return (
     <div>
+      <button onClick={()=>{navigate("/profile")}}>Go to profile</button>
       <h1 className="text-center">Add Product</h1>
       {loading ? (
         <Loading />
