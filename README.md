@@ -10,3 +10,4 @@ Built with React for the frontend and Java Spring for the backend. PostgreSQL da
 ![cafedepotgif1](https://github.com/sgafurov/cafe-depot/assets/78608476/013d5200-daa7-495b-a766-d118bde7800d)
 
 ## Add products as admin
+![cafedepotgif2](https://github.com/sgafurov/cafe-depot/assets/78608476/38c7b49f-b2bd-40c0-a94a-9f7f2892e017)
