@@ -1,0 +1,9 @@
+[build]
+  base = "cafe-depot/"
+  command = "npm run build"
+  publish = "build"
+
+[[redirects]]
+  from = "cafe-depot/*"
+  to = "cafe-depot/public/index.html"
+  status = 200
