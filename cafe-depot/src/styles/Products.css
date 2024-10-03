@@ -57,6 +57,10 @@
 
 .product-details {
     padding: 10px;
+    max-height: 100px !important;
+    /* Set a maximum height for the product details */
+    overflow: hdden;
+    /* Hide overflow content */
 }
 
 .product-details>p {
@@ -64,7 +68,12 @@
     text-align: left;
     align-self: flex-start;
     max-width: 200px;
-    overflow-wrap: break-word;
+    white-space: nowrap;
+    /* Prevent text from wrapping */
+    overflow: hidden;
+    /* Hide overflow content */
+    text-overflow: ellipsis;
+    /*Add ellipsis for overflow text*/
 }
 
 .title {
