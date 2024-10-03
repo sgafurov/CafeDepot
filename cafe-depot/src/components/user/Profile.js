@@ -7,6 +7,8 @@ import Loading from "../loading/Loading";
 
 export default function Profile() {
   const userId = useSelector((state) => state.userSlice.userId);
+  const firstName = useSelector((state) => state.userSlice.firstName);
+  const lastName = useSelector((state) => state.userSlice.lastName);
 
   const [loading, setLoading] = useState(false);
   const [orders, setOrders] = useState([{}]);
@@ -80,6 +82,7 @@ export default function Profile() {
 
   return (
     <div>
+      <h1>Hello, {firstName} {lastName}</h1> {/* Display user's first and last name */}
       My orders
       {loading ? (
         <Loading />
