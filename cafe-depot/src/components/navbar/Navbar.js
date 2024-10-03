@@ -1,25 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { auth } from "../../firebase";
+import { logOutUser } from "../../store/userSlice";
 import logo from "../../assets/cafe-depot-high-resolution-logo-transparent.png";
 import bagIcon from "../../assets/icons/bag.png";
 import profileIcon from "../../assets/icons/user.png";
 import logOutIcon from "../../assets/icons/log-out.png";
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-import { auth } from "../../firebase";
-import { useDispatch, useSelector } from "react-redux";
-import { logOutUser } from "../../store/userSlice";
+import clipboardIcon from "../../assets/icons/clipboard.png";
 import Cart from "../shop/Cart";
 import Search from "./Search";
 import "../../styles/Navbar.css";
 
 export default function Navbar() {
-  let navigate = useNavigate();
-  let dispatch = useDispatch();
-
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const isLoggedIn = useSelector((state) => state.userSlice.isLoggedIn);
   const email = useSelector((state) => state.userSlice.email);
-
-  const [showCart, setShowCart] = useState(false); // Move showCart state to Navbar
+  const [showCart, setShowCart] = useState(false);
 
   const toggleCart = () => {
     setShowCart(!showCart);
@@ -53,9 +51,6 @@ export default function Navbar() {
               </div>
             </div>
           </li>
-          {/* <li className="nav-link">
-            <a href="">Trending</a>
-          </li> */}
           <li className="nav-link">
             <a href="">About Us</a>
           </li>
@@ -73,59 +68,53 @@ export default function Navbar() {
         <ul className="nav-links">
           <li className="nav-link">
             <div className="search-container">
-              {/* <input
-                type="text"
-                placeholder="Search for a product"
-                className="search-bar"
-                onSubmit={handleInputSearch}
-              /> */}
               <Search />
             </div>
           </li>
           <li className="nav-link">
             <div className="icon-container">
               <li className="nav-link">
-                {/* if user is not logged in, display sign up page. if they are, display profile page (or admin page if they are dev) */}
-                <Link
-                  to={
-                    !isLoggedIn
-                      ? "/sign-up"
-                      : isLoggedIn && email === "dev@gmail.com"
-                      ? "/admin-profile"
-                      : "/profile"
-                  }
-                >
+                <Link to={isLoggedIn ? "/profile" : "/sign-up"}>
                   <img
                     src={profileIcon}
-                    alt="Logo"
+                    alt="Profile"
                     className="logo"
                     width={30}
                   />
                 </Link>
               </li>
+
+              {isLoggedIn && (
+                <li className="nav-link">
+                  <Link to={"/admin-profile"}>
+                    <img
+                      src={clipboardIcon}
+                      alt="Clipboard"
+                      className="logo"
+                      width={30}
+                    />
+                  </Link>
+                </li>
+              )}
+
               <li className="nav-link">
                 <Link onClick={toggleCart}>
-                  {/* <Link to="/cart" onClick={toggleCart}> */}
-                  <img src={bagIcon} alt="Logo" className="logo" width={30} />
+                  <img src={bagIcon} alt="Cart" className="logo" width={30} />
                 </Link>
               </li>
-              {/* Pass toggleCart function as a prop to Cart component */}
               {showCart && (
                 <div className="cart-component">
                   <Cart showCart={showCart} onClose={toggleCart} />
                 </div>
               )}
-
               {isLoggedIn && (
                 <li className="nav-link">
                   <img
                     src={logOutIcon}
-                    alt="Logo"
+                    alt="Logout"
                     className="logo"
                     width={30}
-                    onClick={() => {
-                      handleLogout();
-                    }}
+                    onClick={handleLogout}
                   />
                 </li>
               )}

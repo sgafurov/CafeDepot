@@ -2,13 +2,11 @@ import { useEffect, useState } from "react";
 import { BASE_URL } from "../../constants";
 import { ref, getDownloadURL } from "firebase/storage";
 import { storage } from "../../firebase";
-import { useNavigate } from "react-router-dom";
 import Loading from "../loading/Loading";
 import ImagesUpload from "./ImagesUpload";
 import "../../styles/AdminProfile.css";
 
 export default function AdminProfile() {
-  let navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
   const [item, setItem] = useState({
@@ -135,8 +133,38 @@ export default function AdminProfile() {
     }
   };
 
+  const handleEditProduct = async (productId) => {
+    console.log("inside handleEditProduct with productId = " + productId);
+    try {
+      const response = await fetch(
+        `${BASE_URL}/api/products/edit/${productId}`,
+        {
+          method: "PUT",
+          mode: "cors",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      console.log("response ", response);
+      if (response.ok) {
+        alert("Product edited successfully");
+      } else {
+        alert("Failed to edit product");
+        const errorData = await response.json();
+        throw errorData;
+      }
+    } catch (error) {
+      console.error("Error editing product:", error.message);
+      alert("Error editing product: " + error.message);
+    }
+  };
+
   const handleDeleteProduct = async (productId) => {
     console.log("inside handleDeleteProduct with productId = " + productId);
+    if (!window.confirm("Are you sure you want to delete this product?")) {
+      return; // Exit if the user cancels
+    }
     try {
       const response = await fetch(
         `${BASE_URL}/api/products/delete/${productId}`,
@@ -164,7 +192,6 @@ export default function AdminProfile() {
 
   return (
     <div>
-      <button onClick={()=>{navigate("/profile")}}>Go to profile</button>
       <h1 className="text-center">Add Product</h1>
       {loading ? (
         <Loading />
@@ -256,6 +283,15 @@ export default function AdminProfile() {
                     <div style={{ display: "flex" }}>
                       {renderedImages[product.id]}
                     </div>
+
+                    <button
+                      onClick={() => {
+                        handleEditProduct(product.id);
+                      }}
+                    >
+                      Edit
+                    </button>
+
                     <button
                       onClick={() => {
                         handleDeleteProduct(product.id);
