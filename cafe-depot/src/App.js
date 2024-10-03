@@ -16,6 +16,7 @@ import Cart from "./components/shop/Cart";
 import Checkout from "./components/shop/Checkout";
 import Products from "./components/shop/Products";
 import "./App.css";
+import About from "./components/About";
 
 function App() {
   let dispatch = useDispatch();
@@ -94,6 +95,7 @@ function App() {
               user && email === "dev@gmail.com" ? <AdminProfile /> : <Landing />
             }
           />
+          <Route exact path="/about" element={<About />} />
           {/* <Route path="/product/:productId" component={ProductDetails} /> */}
         </Routes>
       </Router>

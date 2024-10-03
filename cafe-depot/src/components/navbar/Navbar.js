@@ -52,7 +52,7 @@ export default function Navbar() {
             </div>
           </li>
           <li className="nav-link">
-            <a href="">About Us</a>
+            <Link to="/about">About Us</Link>
           </li>
           <li className="nav-link">
             <a href="">Contact</a>
